@@ -17,8 +17,9 @@ public class ConexionExcel{
 			}
 		}
 		catch ( Exception error ){
-			error.printStackTrace();
+			error.printStackTrace();			
 		}
+		System.out.println( "Archivo Leido Correctamente" );
 	}
 
 }
