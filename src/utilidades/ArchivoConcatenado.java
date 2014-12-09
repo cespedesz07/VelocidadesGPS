@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.PrintWriter;
 
 public class ArchivoConcatenado{
 	
@@ -31,10 +33,9 @@ public class ArchivoConcatenado{
 	 * Método que lee los archivos .csv de la carpeta definida en el parametro rutaCarpetaOrigen
 	 * y concatena estos archivos para generar un .csv final con el nombre definido en el parámetro
 	 * nombreArchivoResultado, el cual se almacena en la carpeta definida en el archivo rutaCarpetaDestino
-	 * 
+	 * @throws Exception
 	 */
-	public boolean generarArchivoConcatenado() throws Exception{
-		boolean generoArchivo = false;
+	public void generarArchivoConcatenado() throws Exception{
 		File carpeta = new File( this.rutaCarpetaOrigen );			
 		if ( carpeta.exists() ){			
 			if ( carpeta.isDirectory() ){			
@@ -44,6 +45,7 @@ public class ArchivoConcatenado{
 					//Se realiza la lectura linea x linea de cada archivo CSV
 					for ( int i=0; i<listaArchivosCSV.length; i++ ){					
 						File archivoCSV = listaArchivosCSV[i];
+						System.out.println( "Leyendo: " + archivoCSV.getName() );
 						if (  obtenerExtension( archivoCSV ).equals( "csv" )  ){
 							Scanner entrada = new Scanner( archivoCSV );
 							
@@ -61,12 +63,20 @@ public class ArchivoConcatenado{
 						
 					}
 					
+					//Al finalizar la lectura de los archivos .csv, se crea la carpeta con el archivo concatenado
+					File carpetaDestino = new File( this.rutaCarpetaDestino );
+					carpetaDestino.mkdir();
+					
+					PrintWriter archivoConcatenado = new PrintWriter( this.rutaCarpetaDestino + "//" +  this.nombreArchivoResultado );
+					archivoConcatenado.write( this.contenidoTemp );
+					System.out.println( this.contenidoTemp );
+					archivoConcatenado.close();
 				}
 				else{
-					throw new Exception( "La carpeta " + this.rutaCarpetaOrigen + " no contiene ningun archivo" );
+					throw new Exception( "La carpeta " + this.rutaCarpetaOrigen + " no contiene ningun archivo" );					
 				}
 			}
-			else{
+			else{				
 				throw new Exception ( "La ruta " + this.rutaCarpetaOrigen + " no corresponde a un directorio." );
 			}
 		}
@@ -76,10 +86,15 @@ public class ArchivoConcatenado{
 	}
 	
 	
+	/**
+	 * Método para capturar la extension de un archivo (objeto File).
+	 */
 	private String obtenerExtension( File archivo ){
 		String[] partido = archivo.getAbsolutePath().toLowerCase().split("\\.");
 		return partido[ partido.length - 1 ];
 	}
+	
+	
 	
 
 }
