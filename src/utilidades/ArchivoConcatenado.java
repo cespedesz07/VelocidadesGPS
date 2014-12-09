@@ -44,41 +44,41 @@ public class ArchivoConcatenado{
 					//Se realiza la lectura linea x linea de cada archivo CSV
 					for ( int i=0; i<listaArchivosCSV.length; i++ ){					
 						File archivoCSV = listaArchivosCSV[i];
-						Scanner entrada = new Scanner( archivoCSV );
-						
-						while ( entrada.hasNext() ){
-							if ( i == 0 ){
-								entrada.next();
+						if (  obtenerExtension( archivoCSV ).equals( "csv" )  ){
+							Scanner entrada = new Scanner( archivoCSV );
+							
+							while ( entrada.hasNext() ){
+								if ( i != 0 ){					//Si el archivo a leer es diferente al primero de la lista...
+									entrada.next();				//...se hace caso omiso a la lectura de la primer linea (la cabecera)
+								}
+								String linea = entrada.nextLine(); 
+								this.contenidoTemp += linea + "\n";
 							}
-							String linea = entrada.nextLine(); 
-							this.contenidoTemp += linea + "\n";
 						}
+						else{
+							throw new Exception( "La carpeta " + this.rutaCarpetaOrigen + " no contiene archivos .csv" );
+						}
+						
 					}
 					
 				}
 				else{
-					
+					throw new Exception( "La carpeta " + this.rutaCarpetaOrigen + " no contiene ningun archivo" );
 				}
 			}
 			else{
-				throw new Exception ( "La ruta seleccionada no corresponde a un directorio." );
+				throw new Exception ( "La ruta " + this.rutaCarpetaOrigen + " no corresponde a un directorio." );
 			}
 		}
 		else{
 			throw new Exception ( "No existe el archivo/ruta seleccionada." );
-		}
-		try{
-			
-			Scanner entrada = new Scanner( archivo );			
-			while ( entrada.hasNext() ){
-				String[] linea = entrada.nextLine().split(",");
-				System.out.println( Arrays.toString( linea ) );
-			}
-		}
-		catch ( Exception error ){
-			error.printStackTrace();			
-		}
-		System.out.println( "Archivo Leido Correctamente" );
+		}		
+	}
+	
+	
+	private String obtenerExtension( File archivo ){
+		String[] partido = archivo.getAbsolutePath().toLowerCase().split("\\.");
+		return partido[ partido.length - 1 ];
 	}
 	
 
