@@ -17,7 +17,7 @@ import utilidades.ArchivoConcatenado;
 public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 	
 	
-	private JLabel lbl;
+	private JLabel lblSeleccionarCarpeta;
 	private JButton btnSeleccionarCarpeta;
 	private JFileChooser selectorCarpeta;
 	private ArchivoConcatenado archivoConcatenado;
@@ -27,12 +27,12 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 		setBorder( new TitledBorder("Seleccionar Carpeta con Archivos") );
 		setBackground( new Color(255, 255, 255) );
 		
-		this.lbl = new JLabel( "Selecionar carpeta: " );
+		this.lblSeleccionarCarpeta = new JLabel( "Selecionar carpeta: " );
 		
 		this.btnSeleccionarCarpeta = new JButton( "Examinar..." );
 		this.btnSeleccionarCarpeta.addActionListener( this );
 		
-		add( this.lbl );
+		add( this.lblSeleccionarCarpeta );
 		add( this.btnSeleccionarCarpeta );
 	}
 

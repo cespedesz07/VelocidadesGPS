@@ -30,7 +30,7 @@ public class MainGUI extends JFrame {
 	
 	
 	//***********************************************************************************
-	public static void main( String[] args ){
+	public static void main( String[] args ){ 		
 		try {
 	        UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );	        
 	    } catch (ClassNotFoundException e) {
