@@ -37,28 +37,29 @@ public class ArchivoConcatenado{
 	 */
 	public void generarArchivoConcatenado() throws Exception{
 		File carpeta = new File( this.rutaCarpetaOrigen );			
-		if ( carpeta.exists() ){			
-			if ( carpeta.isDirectory() ){			
+		if ( carpeta.exists() ){														//--Se verifica si la carpeta existe		
+			if ( carpeta.isDirectory() ){												//--Se verifica si la carpeta realmente es un folder
 				File[] listaArchivosCSV = carpeta.listFiles();
 				if ( listaArchivosCSV.length != 0 ){
 					
 					//Se realiza la lectura linea x linea de cada archivo CSV
 					for ( int i=0; i<listaArchivosCSV.length; i++ ){					
 						File archivoCSV = listaArchivosCSV[i];
-						System.out.println( "Leyendo: " + archivoCSV.getName() );
-						if (  obtenerExtension( archivoCSV ).equals( "csv" )  ){
+						System.out.printf( "%d Leyendo: %s \n", i, archivoCSV.getName() );
+						if (  obtenerExtension( archivoCSV ).equals( "csv" )  ){					//--Si todos los archivos dentro de la carpeta son .csv
 							Scanner entrada = new Scanner( archivoCSV );
 							
-							while ( entrada.hasNext() ){
-								if ( i != 0 ){					//Si el archivo a leer es diferente al primero de la lista...
-									entrada.next();				//...se hace caso omiso a la lectura de la primer linea (la cabecera)
-								}
+							if ( i != 0 ){															//Si el archivo a leer es diferente al primero de la lista...
+								System.out.println( "Exceptuada: " + entrada.nextLine() );			//...se hace caso omiso a la lectura de la primer linea (la cabecera)
+							}							
+							while ( entrada.hasNext() ){								
 								String linea = entrada.nextLine(); 
 								this.contenidoTemp += linea + "\n";
 							}
+							
 						}
 						else{
-							throw new Exception( "La carpeta " + this.rutaCarpetaOrigen + " no contiene archivos .csv" );
+							throw new Exception( "La carpeta " + this.rutaCarpetaOrigen + "contiene archivos/carpetas con formato diferente a .csv" );
 						}
 						
 					}
@@ -69,7 +70,6 @@ public class ArchivoConcatenado{
 					
 					PrintWriter archivoConcatenado = new PrintWriter( this.rutaCarpetaDestino + "//" +  this.nombreArchivoResultado );
 					archivoConcatenado.write( this.contenidoTemp );
-					System.out.println( this.contenidoTemp );
 					archivoConcatenado.close();
 				}
 				else{
