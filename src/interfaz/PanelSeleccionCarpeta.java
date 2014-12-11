@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import utilidades.ArchivoConcatenado;
+import utilidades.ArchivoPuntosConcatenado;
 
 public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 	
@@ -20,7 +20,7 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 	private JLabel lblSeleccionarCarpeta;
 	private JButton btnSeleccionarCarpeta;
 	private JFileChooser selectorCarpeta;
-	private ArchivoConcatenado archivoConcatenado;
+	private ArchivoPuntosConcatenado archivoConcatenado;
 	
 	
 	public PanelSeleccionCarpeta(){
@@ -45,7 +45,7 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 		int opcion = selectorCarpeta.showOpenDialog( this );
 		if ( opcion == JFileChooser.APPROVE_OPTION ){
 			File carpetaSeleccionada = selectorCarpeta.getSelectedFile();
-			this.archivoConcatenado = new ArchivoConcatenado( carpetaSeleccionada.getAbsolutePath() );
+			this.archivoConcatenado = new ArchivoPuntosConcatenado( carpetaSeleccionada.getAbsolutePath() );
 			try{
 				this.archivoConcatenado.generarArchivoConcatenado();
 				JOptionPane.showMessageDialog(this, "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );

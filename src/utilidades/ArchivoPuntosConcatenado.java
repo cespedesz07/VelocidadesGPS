@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 
-public class ArchivoConcatenado{
+public class ArchivoPuntosConcatenado{
 	
 	
 	
@@ -20,7 +20,7 @@ public class ArchivoConcatenado{
 	
 	
 	//Métodos
-	public ArchivoConcatenado( String carpetaOrigen ){
+	public ArchivoPuntosConcatenado( String carpetaOrigen ){
 		this.rutaCarpetaOrigen = carpetaOrigen;
 		this.rutaCarpetaDestino = carpetaOrigen + "//resultado";
 		this.nombreArchivoResultado = "concatenado.csv";
