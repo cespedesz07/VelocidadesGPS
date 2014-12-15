@@ -2,20 +2,34 @@ package utilidades;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
+import clasesVelocidad.Arco;
+import clasesVelocidad.Punto;
 
 public class ArchivoPuntosConcatenado{
 	
 	
 	
+	private static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "LATITUDE N/S", "LONGITUDE E/W", "HEIGTH" };
+	
+	
+	
 	//Atributos
-	private String rutaCarpetaOrigen;			//Ruta de la carpeta donde se encuentran los archivos .csv
-	private String rutaCarpetaDestino;			//Ruta de la carpeta donde se va a almacenar el archivo con los datos concatenados
-	private String nombreArchivoResultado;		//Nombre del archivo csv con los datos concatenados
-	private String contenidoTemp;				//Arreglo temporal que contiene las lineas a concatenar en el archivo final
+	private String rutaCarpetaOrigen;			// Ruta de la carpeta donde se encuentran los archivos .csv
+	private String rutaCarpetaDestino;			// Ruta de la carpeta donde se va a almacenar el archivo con los datos concatenados
+	private String nombreArchivoResultado;		// Nombre del archivo csv con los datos concatenados
+	private String contenidoTemp;				// Variable temporal que contiene las lineas a concatenar en el archivo final
+	
+	private String rutaOrigen;					// Ruta de Origen (este atributo se usa para cuando se tiene el 
+												//  archivo con los puntos concatenados, para postereiormente calcular la velocidad
+												//  promedio de c/arco)
+	private String delimitador;
+	private ArrayList<String[]> contenidoPuntos;
 	
 	
 	
@@ -23,8 +37,10 @@ public class ArchivoPuntosConcatenado{
 	public ArchivoPuntosConcatenado( String carpetaOrigen ){
 		this.rutaCarpetaOrigen = carpetaOrigen;
 		this.rutaCarpetaDestino = carpetaOrigen + "//resultado";
-		this.nombreArchivoResultado = "concatenado.csv";
+		this.nombreArchivoResultado = "concatenado.csv";		
 		this.contenidoTemp = "";
+		this.rutaOrigen = "";
+		this.contenidoPuntos = new ArrayList<String[]>();
 	} 
 	
 	
@@ -45,7 +61,7 @@ public class ArchivoPuntosConcatenado{
 					//Se realiza la lectura linea x linea de cada archivo CSV
 					for ( int i=0; i<listaArchivosCSV.length; i++ ){					
 						File archivoCSV = listaArchivosCSV[i];
-						System.out.printf( "%d Leyendo: %s \n", i, archivoCSV.getName() );
+						//System.out.printf( "%d Leyendo: %s \n", i, archivoCSV.getName() );
 						if (  obtenerExtension( archivoCSV ).equals( "csv" )  ){					//--Si todos los archivos dentro de la carpeta son .csv
 							Scanner entrada = new Scanner( archivoCSV );
 							
@@ -92,6 +108,56 @@ public class ArchivoPuntosConcatenado{
 	private String obtenerExtension( File archivo ){
 		String[] partido = archivo.getAbsolutePath().toLowerCase().split("\\.");
 		return partido[ partido.length - 1 ];
+	}
+	
+	
+	
+	public void cargarPuntosConcatenados( String ruta ) throws FileNotFoundException{		
+		this.rutaOrigen = ruta;
+		File puntosGPS = new File( this.rutaOrigen );
+		if ( puntosGPS.exists() ){
+			if ( puntosGPS.isFile() ){
+				Scanner entrada = new Scanner( puntosGPS );
+				
+				if ( entrada.hasNext(";") ){
+					this.delimitador = ";";
+				}
+				else if ( entrada.hasNext(",") ){
+					this.delimitador = ",";
+				}
+				while ( entrada.hasNext() ){
+					String[] linea = entrada.nextLine().split( this.delimitador );
+					this.contenidoPuntos.add( linea );
+				}
+			}
+		}
+	}
+	
+	
+	
+	public void inicializarPuntos(){
+		//Primero se obtiene los indices de las columnas
+		List<String> columnasRedVial = Arrays.asList( this.contenidoPuntos.get(0) );
+		ArrayList<Integer> indicesColumnas = new ArrayList<Integer>();
+		int indiceColumna = 0;
+		for ( String columna : COLUMNAS_PUNTOS ){
+			indiceColumna = columnasRedVial.indexOf( columna );
+			indicesColumnas.add( indiceColumna );
+		}
+		
+		//Luego se inicializan los puntos y se agregan a los arcos de la red vial
+		for ( int i=1; i<this.contenidoPuntos.size(); i++ ){
+			String[] fila = this.contenidoPuntos.get(i);
+			int index = Integer.valueOf( fila[0] );
+			String fecha = fila[1];
+			String hora = fila[2];
+			double latitud = Double.parseDouble( fila[3] );
+			double longitud = Double.parseDouble( fila[4] );
+			int altitud = Integer.valueOf( fila[5] );
+			Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);
+			this.redVial.
+		}
+				
 	}
 	
 	

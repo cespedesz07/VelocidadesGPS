@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import clasesVelocidad.Arco;
+import clasesVelocidad.RedVial;
 
 public class ArchivoRedVial {
 	
 	
-	private static final String[] COLUMNAS = { "Layer",     "ID_Via", 	"Direccion", 
-											   "Latitud1", "Longitud1", "Latitud2", "Longitud2" };		
+	private static final String[] COLUMNAS_RED_VIAL = { "Layer", "ID_Via", "Direccion", "Latitud1", "Longitud1", "Latitud2", "Longitud2" };		
 	private String rutaOrigen;
 	private ArrayList<String[]> contenidoRedVial;	
 	private String delimitador;	
 	
-	private ArrayList<Arco> arregloArcos;
+	private RedVial redVial;
 	
 	
 	
@@ -28,7 +28,7 @@ public class ArchivoRedVial {
 		this.contenidoRedVial = new ArrayList<String[]>();		
 		this.delimitador = "";		
 		
-		this.arregloArcos = new ArrayList<Arco>();			
+		this.redVial = new RedVial();			
 	}
 	
 	
@@ -37,8 +37,7 @@ public class ArchivoRedVial {
 		File redVial = new File( this.rutaOrigen );
 		if ( redVial.exists() ){
 			if ( redVial.isFile() ){
-				Scanner entrada = new Scanner( redVial );
-				
+				Scanner entrada = new Scanner( redVial );				
 				if ( entrada.hasNext(";") ){
 					this.delimitador = ";";
 				}
@@ -51,17 +50,26 @@ public class ArchivoRedVial {
 					this.contenidoRedVial.add( lineaPartida );
 				}
 			}
+			else{
+				throw new Exception( "El objeto seleccionado no es un archivo." );
+			}
+		}
+		else{
+			throw new Exception( "El archivo no existe" );
 		}
 	}
 	
 	
-	
-	private void obtenerValoresColumnas(){
+	/**
+	 * Método que recorre el contenido de la red vial (previamente cargado con el método cargarRedVial())
+	 * e inicializa las instancias de los Arcos, además de agregarlos al objeto RedVial
+	 */
+	public void inicializarArcos(){
 		//Primero se obtiene los indices de las columnas
 		List<String> columnasRedVial = Arrays.asList( this.contenidoRedVial.get(0) );
 		ArrayList<Integer> indicesColumnas = new ArrayList<Integer>();
 		int indiceColumna = 0;
-		for ( String columna : COLUMNAS ){
+		for ( String columna : COLUMNAS_RED_VIAL ){
 			indiceColumna = columnasRedVial.indexOf( columna );
 			indicesColumnas.add( indiceColumna );
 		}
@@ -80,8 +88,10 @@ public class ArchivoRedVial {
 			latitud2 = Double.parseDouble( fila[ indicesColumnas.get(5) ] );
 			longitud2 = Double.parseDouble( fila[ indicesColumnas.get(6) ] );			
 			Arco arco = new Arco( idVia, layer, direccion, latitud1, longitud1, latitud1, longitud1 );
-			this.arregloArcos.add( arco );
+			this.redVial.agregarArco(arco);
 		}
 	}
+	
+	
 
 }
