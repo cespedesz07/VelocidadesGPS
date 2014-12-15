@@ -43,7 +43,7 @@ public class Punto {
 		return Double.parseDouble( valor ) * factor;
 	}
 
-
+	
 	public int getIndex() {
 		return index;
 	}

@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 
 import clasesVelocidad.Arco;
 import clasesVelocidad.Punto;
+import clasesVelocidad.RedVial;
 
 public class ArchivoPuntosConcatenado{
 	
@@ -102,6 +103,8 @@ public class ArchivoPuntosConcatenado{
 	}
 	
 	
+	
+	
 	/**
 	 * Método para capturar la extension de un archivo (objeto File).
 	 */
@@ -112,6 +115,12 @@ public class ArchivoPuntosConcatenado{
 	
 	
 	
+	
+	
+	/**
+	 * Método que carga el archivo de los puntos del GPS concatenado y los 
+	 * 
+	 */
 	public void cargarPuntosConcatenados( String ruta ) throws FileNotFoundException{		
 		this.rutaOrigen = ruta;
 		File puntosGPS = new File( this.rutaOrigen );
@@ -135,7 +144,7 @@ public class ArchivoPuntosConcatenado{
 	
 	
 	
-	public void inicializarPuntos(){
+	public void inicializarPuntos( RedVial redVial ){
 		//Primero se obtiene los indices de las columnas
 		List<String> columnasRedVial = Arrays.asList( this.contenidoPuntos.get(0) );
 		ArrayList<Integer> indicesColumnas = new ArrayList<Integer>();
@@ -155,7 +164,7 @@ public class ArchivoPuntosConcatenado{
 			double longitud = Double.parseDouble( fila[4] );
 			int altitud = Integer.valueOf( fila[5] );
 			Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);
-			this.redVial.
+			redVial.ubicarPunto( punto );
 		}
 				
 	}

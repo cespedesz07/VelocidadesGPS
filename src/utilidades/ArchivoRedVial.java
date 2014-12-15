@@ -33,6 +33,12 @@ public class ArchivoRedVial {
 	
 	
 	
+	
+	
+	/**
+	 * Método que lee el archivo de la red vial y carga el contenido de la red vial
+	 * a un arreglo temporal (contenidoRedVial)	 
+	 */
 	public void cargarRedVial() throws Exception{
 		File redVial = new File( this.rutaOrigen );
 		if ( redVial.exists() ){
@@ -58,6 +64,8 @@ public class ArchivoRedVial {
 			throw new Exception( "El archivo no existe" );
 		}
 	}
+	
+	
 	
 	
 	/**
