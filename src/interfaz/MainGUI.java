@@ -1,10 +1,6 @@
 package interfaz;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.*;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 public class MainGUI extends JFrame {
 	
@@ -14,7 +10,7 @@ public class MainGUI extends JFrame {
 	
 	
 	public MainGUI(){
-		setSize( 300, 200 );
+		setSize( 450, 600 );
 		setTitle( "Pantalla Inicial" );	
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
 		
