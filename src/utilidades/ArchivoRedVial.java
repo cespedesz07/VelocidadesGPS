@@ -56,8 +56,7 @@ public class ArchivoRedVial {
 					}				
 					System.out.println( this.delimitador );
 					while ( entrada.hasNext() ){
-						String linea = entrada.nextLine();
-						String[] lineaPartida = linea.split( this.delimitador );
+						String[] lineaPartida = entrada.nextLine().split( ";" );
 						this.contenidoRedVial.add( lineaPartida );
 					}
 				}
@@ -81,15 +80,22 @@ public class ArchivoRedVial {
 	 * Método que recorre el contenido de la red vial (previamente cargado con el método cargarRedVial())
 	 * e inicializa las instancias de los Arcos, además de agregarlos al objeto RedVial
 	 */
-	public void inicializarArcos(){
+	public void inicializarArcos() throws Exception{
 		//Primero se obtiene los indices de las columnas
 		List<String> columnasRedVial = Arrays.asList( this.contenidoRedVial.get(0) );
 		ArrayList<Integer> indicesColumnas = new ArrayList<Integer>();
 		int indiceColumna = 0;
 		for ( String columna : COLUMNAS_RED_VIAL ){
 			indiceColumna = columnasRedVial.indexOf( columna );
-			indicesColumnas.add( indiceColumna );
+			if ( indiceColumna != -1 ){
+				indicesColumnas.add( indiceColumna );
+			}
+			else{
+				throw new Exception( "La columna [ " + columna + " ] no ha sido encontrada en la Red Vial. " );
+			}
+			
 		}
+		System.out.println( Arrays.toString( indicesColumnas.toArray() ) );
 		
 		int idVia = 0;
 		String layer = "", direccion = "";
