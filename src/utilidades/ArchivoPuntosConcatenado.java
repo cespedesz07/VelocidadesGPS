@@ -10,6 +10,9 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
+import javax.swing.SwingUtilities;
+
 import clasesVelocidad.Punto;
 import clasesVelocidad.RedVial;
 
@@ -91,7 +94,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 							}
 							
 							double progreso = ( (double)(i+1) / (double)listaArchivosCSV.length ) * 100;
-							System.out.println( (int)progreso + ", " + progreso + ", " + (i+1) + ", " + listaArchivosCSV.length );
+							//System.out.println( (int)progreso + ", " + progreso + ", " + (i+1) + ", " + listaArchivosCSV.length );							
 							this.panelSeleccionCarpeta.setProgreso( (int)progreso );
 							this.panelSeleccionCarpeta.setPosicionAreaLog( this.contenidoTemp.length() );
 						}

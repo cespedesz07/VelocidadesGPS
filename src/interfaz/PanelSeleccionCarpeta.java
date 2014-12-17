@@ -55,8 +55,9 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 		areaLog.setBounds(28, 90, 370, 160);
 		add(areaLog);
 		
-		barraProgreso = new JProgressBar();		
-		barraProgreso.setBounds(252, 70, 146, 14);
+		barraProgreso = new JProgressBar();
+		barraProgreso.setStringPainted( true );
+		barraProgreso.setBounds(232, 70, 146, 14);
 		add(barraProgreso);
 		
 		
@@ -79,11 +80,9 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 		this.areaLog.setText( texto );
 	}
 	
-	public void setProgreso( int valor ){
-		SwingUtilities.invokeLater( new Runnable(){
-			
-		});
-		this.barraProgreso.setValue( valor );
+	//http://www.javamex.com/tutorials/threads/invokelater.shtml
+	public void setProgreso( int valor ){		
+		barraProgreso.setValue( valor );	
 	}
 	
 	
@@ -96,24 +95,32 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 			
 			File carpetaSeleccionada = selectorCarpeta.getSelectedFile();
 			this.archivoConcatenado = new ArchivoPuntosConcatenado( carpetaSeleccionada.getAbsolutePath(), this );
-			try{
-				Date fechaHoraInicio = new java.util.Date();
-				this.areaLog.setText( fechaHoraInicio.toString() );
-				this.areaLog.setText( this.areaLog.getText() + "\n\nConcatenando... \n" );
-				this.barraProgreso.setValue(20);
-				this.archivoConcatenado.generarArchivoConcatenado();				
-				JOptionPane.showMessageDialog(this, "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
-				this.barraProgreso.setIndeterminate( false );
-				this.barraProgreso.setValue( 100 );
-				Date fechaHoraFin = new java.util.Date();
-				this.areaLog.setText( this.areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );				
-			}
-			catch ( Exception error ){
-				this.barraProgreso.setIndeterminate( false );
-				this.areaLog.setText( this.archivoConcatenado.getArchivosErroneos().toString() );
-				JOptionPane.showMessageDialog(this, error.getMessage(), "Error al concatenar archivo", JOptionPane.ERROR_MESSAGE );			
-				//error.printStackTrace();
-			}
-		}
+			this.btnBuscar.setEnabled(false);
+			Thread hilo = new Thread(){
+				public void run(){
+					try{
+						Date fechaHoraInicio = new java.util.Date();
+						barraProgreso.setValue(1);
+						areaLog.setText( fechaHoraInicio.toString() );
+						areaLog.setText( areaLog.getText() + "\n\nConcatenando... \n" );				
+						archivoConcatenado.generarArchivoConcatenado();										
+						JOptionPane.showMessageDialog(new JPanel(), "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+						btnBuscar.setEnabled(true);
+						Date fechaHoraFin = new java.util.Date();
+						areaLog.setText( areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );	
+					}
+					catch ( Exception error ){
+						areaLog.setText( archivoConcatenado.getArchivosErroneos().toString() );
+						JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al concatenar archivo", JOptionPane.ERROR_MESSAGE );			
+						//error.printStackTrace();
+					}
+					
+				}
+			};
+			hilo.start();
+		}//Cierre If
 	}
+	
+	
+	
 }
