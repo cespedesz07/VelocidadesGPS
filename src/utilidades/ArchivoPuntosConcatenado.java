@@ -1,6 +1,6 @@
 package utilidades;
 
-import interfaz.PanelSeleccionCarpeta;
+import interfaz.PanelConcatenadoPuntos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,12 +37,12 @@ public class ArchivoPuntosConcatenado extends Thread{
 	private String delimitador;
 	private ArrayList<String[]> contenidoPuntos;
 	
-	private PanelSeleccionCarpeta panelSeleccionCarpeta;
+	private PanelConcatenadoPuntos panelConcatenadoPuntos;
 	
 	
 	
 	//Métodos
-	public ArchivoPuntosConcatenado( String carpetaOrigen, PanelSeleccionCarpeta panelSeleccionCarpeta ){
+	public ArchivoPuntosConcatenado( String carpetaOrigen, PanelConcatenadoPuntos panelConcatenadoPuntos ){
 		this.rutaCarpetaOrigen = carpetaOrigen;
 		this.rutaCarpetaDestino = carpetaOrigen + "//resultado";
 		this.nombreArchivoResultado = "concatenado.csv";		
@@ -50,7 +50,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 		this.rutaOrigen = "";
 		this.contenidoPuntos = new ArrayList<String[]>();
 		this.archivosErroneos = new HashMap<String, String>();
-		this.panelSeleccionCarpeta = panelSeleccionCarpeta;
+		this.panelConcatenadoPuntos = panelConcatenadoPuntos;
 	} 
 	
 	
@@ -79,7 +79,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 						for ( int i=0; i<listaArchivosCSV.length; i++ ){					
 							File archivoCSV = listaArchivosCSV[i];
 							//System.out.printf( "%d Leyendo: %s \n", i, archivoCSV.getName() );
-							this.panelSeleccionCarpeta.setAreaLog( this.panelSeleccionCarpeta.getAreaLog() + 
+							this.panelConcatenadoPuntos.setAreaLog( this.panelConcatenadoPuntos.getAreaLog() + 
 									String.format( "%d - Leyendo: %s \n", i+1, archivoCSV.getName() ) );
 									
 							
@@ -95,8 +95,8 @@ public class ArchivoPuntosConcatenado extends Thread{
 							
 							double progreso = ( (double)(i+1) / (double)listaArchivosCSV.length ) * 100;
 							//System.out.println( (int)progreso + ", " + progreso + ", " + (i+1) + ", " + listaArchivosCSV.length );							
-							this.panelSeleccionCarpeta.setProgreso( (int)progreso );
-							this.panelSeleccionCarpeta.setPosicionAreaLog( this.contenidoTemp.length() );
+							this.panelConcatenadoPuntos.setProgreso( (int)progreso );
+							this.panelConcatenadoPuntos.setPosicionAreaLog( this.contenidoTemp.length() );
 						}
 					}
 					else{

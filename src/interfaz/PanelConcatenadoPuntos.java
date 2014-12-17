@@ -22,7 +22,7 @@ import java.awt.TextArea;
 
 import javax.swing.JProgressBar;
 
-public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
+public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 	
 	
 	private JFileChooser selectorCarpeta;
@@ -35,7 +35,7 @@ public class PanelSeleccionCarpeta extends JPanel implements ActionListener {
 	/**
 	 * Create the panel.
 	 */
-	public PanelSeleccionCarpeta() {
+	public PanelConcatenadoPuntos() {
 		setLayout(null);
 		setBorder( new TitledBorder("Seleccionar Carpeta") );
 		setBackground( new Color(255, 255, 255) );
