@@ -8,7 +8,7 @@ import javax.swing.*;
 public class MainGUI extends JFrame implements WindowListener {
 	
 	
-	private PanelSeleccionCarpeta panelSeleccionCarpeta;
+	private PanelConcatenadoPuntos panelSeleccionCarpeta;
 	
 	
 	
@@ -18,7 +18,7 @@ public class MainGUI extends JFrame implements WindowListener {
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
 		addWindowListener( this );
 		
-		this.panelSeleccionCarpeta = new PanelSeleccionCarpeta();
+		this.panelSeleccionCarpeta = new PanelConcatenadoPuntos();
 		add( this.panelSeleccionCarpeta );	
 	}
 	
