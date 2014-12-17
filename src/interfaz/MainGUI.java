@@ -1,5 +1,6 @@
 package interfaz;
 
+import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -9,17 +10,22 @@ public class MainGUI extends JFrame implements WindowListener {
 	
 	
 	private PanelConcatenadoPuntos panelSeleccionCarpeta;
+	private JCalcular panelCalculoVelocidades;
 	
 	
 	
 	public MainGUI(){
-		setSize( 450, 600 );
+		setSize( 480, 620 );
 		setTitle( "Pantalla Inicial" );	
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
+		setLayout( new GridLayout(2,1)  );
 		addWindowListener( this );
 		
 		this.panelSeleccionCarpeta = new PanelConcatenadoPuntos();
-		add( this.panelSeleccionCarpeta );	
+		add( this.panelSeleccionCarpeta );
+		
+		this.panelCalculoVelocidades = new JCalcular();
+		add( this.panelCalculoVelocidades );
 	}
 	
 	

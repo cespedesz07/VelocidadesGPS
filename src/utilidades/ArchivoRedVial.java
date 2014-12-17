@@ -1,7 +1,6 @@
 package utilidades;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +15,7 @@ public class ArchivoRedVial {
 	private static final String[] COLUMNAS_RED_VIAL = { "Layer", "ID_Via", "Direccion", "Latitud1", "Longitud1", "Latitud2", "Longitud2" };		
 	private String rutaOrigen;
 	private ArrayList<String[]> contenidoRedVial;	
-	private String delimitador;	
-	
+	private String delimitador;		
 	private RedVial redVial;
 	
 	
@@ -26,11 +24,16 @@ public class ArchivoRedVial {
 	public ArchivoRedVial( String rutaOrigen ){
 		this.rutaOrigen = rutaOrigen;
 		this.contenidoRedVial = new ArrayList<String[]>();		
-		this.delimitador = "";		
-		
+		this.delimitador = "";			
 		this.redVial = new RedVial();			
 	}
 	
+	
+	
+	
+	public RedVial getRedVial(){
+		return this.redVial;
+	}	
 	
 	
 	
@@ -43,17 +46,23 @@ public class ArchivoRedVial {
 		File redVial = new File( this.rutaOrigen );
 		if ( redVial.exists() ){
 			if ( redVial.isFile() ){
-				Scanner entrada = new Scanner( redVial );				
-				if ( entrada.hasNext(";") ){
-					this.delimitador = ";";
+				if ( obtenerExtension( redVial ).equals( "csv" ) ){
+					Scanner entrada = new Scanner( redVial );				
+					if ( entrada.hasNext(";") ){
+						this.delimitador = "\\;";
+					}
+					else if ( entrada.hasNext(",") ){
+						this.delimitador = "\\,";
+					}				
+					System.out.println( this.delimitador );
+					while ( entrada.hasNext() ){
+						String linea = entrada.nextLine();
+						String[] lineaPartida = linea.split( this.delimitador );
+						this.contenidoRedVial.add( lineaPartida );
+					}
 				}
-				else if ( entrada.hasNext(",") ){
-					this.delimitador = ",";
-				}				
-				
-				while ( entrada.hasNext() ){
-					String[] lineaPartida = entrada.nextLine().split( this.delimitador );
-					this.contenidoRedVial.add( lineaPartida );
+				else{
+					throw new Exception( "El archivo seleccionado no tiene extensión .csv" );
 				}
 			}
 			else{
@@ -88,6 +97,7 @@ public class ArchivoRedVial {
 		//Luego de Tener los indices, se utilizan para consultar las columnas de interes
 		for ( int i=1; i<this.contenidoRedVial.size(); i++ ){
 			String[] fila = this.contenidoRedVial.get(i);
+			System.out.println( Arrays.toString(fila) );
 			layer = fila[ indicesColumnas.get(0) ];
 			idVia = Integer.valueOf( fila[ indicesColumnas.get(1) ] );
 			direccion = fila[ indicesColumnas.get(2) ];
@@ -98,6 +108,17 @@ public class ArchivoRedVial {
 			Arco arco = new Arco( idVia, layer, direccion, latitud1, longitud1, latitud1, longitud1 );
 			this.redVial.agregarArco(arco);
 		}
+	}
+	
+	
+	
+	/**
+	 * Método para capturar la extension de un archivo (objeto File).
+	 */
+	private String obtenerExtension( File archivo ){
+		String[] partido = archivo.getAbsolutePath().toLowerCase().split("\\.");
+		String otro = partido[ partido.length - 1 ];
+		return otro;
 	}
 	
 	

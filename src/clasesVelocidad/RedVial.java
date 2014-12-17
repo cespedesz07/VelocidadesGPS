@@ -34,7 +34,7 @@ public class RedVial {
 	/**
 	 * Método para Ubicar un punto en un arco 
 	 * de acuerdo a la latitud y longitud del punto respecto a las 
-	 * latitudes y longiotudes 1 y 2 del arco.
+	 * latitudes y longitudes 1 y 2 del arco.
 	 */
 	public void ubicarPunto( Punto punto ){
 		for ( Arco arco : this.arregloArcos ){

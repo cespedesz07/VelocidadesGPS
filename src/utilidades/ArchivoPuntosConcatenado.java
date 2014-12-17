@@ -100,7 +100,8 @@ public class ArchivoPuntosConcatenado extends Thread{
 						}
 					}
 					else{
-						throw new Exception( "La carpeta contiene archivos que no son .csv o Contiene archivos vacios" );
+						throw new Exception( "La carpeta contiene archivos que no son .csv o Contiene archivos vacios "
+								+ "\nPor favor revisar el Log para ver archivos inválidos." );
 					}
 					
 					
@@ -148,12 +149,16 @@ public class ArchivoPuntosConcatenado extends Thread{
 	private HashMap<String, String> verificarCarpeta( File[] listaArchivos ){
 		HashMap<String, String> archivosErroneos = new HashMap<String, String>();
 		for ( File archivo : listaArchivos ){
+			if ( archivo.isDirectory() ){
+				archivosErroneos.put( archivo.getName(), "Carpeta" );
+			}
 			if (  !obtenerExtension( archivo ).equals( "csv" ) ){					//Se verifica si todos los archivos dentro de la carpeta son .csv
 				archivosErroneos.put( archivo.getName(), "Archivo no csv" );
 			}
 			if ( archivo.length() == 0 ){											
 				archivosErroneos.put( archivo.getName(), "Archivo vacío" );
 			}
+			
 		}
 		return archivosErroneos;
 	}
@@ -163,11 +168,10 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	/**
-	 * Método que carga el archivo de los puntos del GPS concatenado y los 
+	 * Método que carga el archivo de los puntos del GPS concatenado y los agrega al arreglo temporal
 	 * 
 	 */
-	public void cargarPuntosConcatenados( String ruta ) throws FileNotFoundException{		
-		this.rutaOrigen = ruta;
+	public void cargarPuntosConcatenados() throws FileNotFoundException{
 		File puntosGPS = new File( this.rutaOrigen );
 		if ( puntosGPS.exists() ){
 			if ( puntosGPS.isFile() ){

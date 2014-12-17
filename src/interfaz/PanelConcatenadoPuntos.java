@@ -25,19 +25,19 @@ import javax.swing.JProgressBar;
 public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 	
 	
-	private JFileChooser selectorCarpeta;
-	private ArchivoPuntosConcatenado archivoConcatenado;
+	private JFileChooser selectorCarpeta;	
 	private JProgressBar barraProgreso;
 	private JLabel lblSeleccionCarpeta;
 	private JButton btnBuscar;
 	private TextArea areaLog;
+	private ArchivoPuntosConcatenado archivoConcatenado;
 
 	/**
 	 * Create the panel.
 	 */
 	public PanelConcatenadoPuntos() {
 		setLayout(null);
-		setBorder( new TitledBorder("Seleccionar Carpeta") );
+		setBorder( new TitledBorder("Concatenar Puntos GPS") );
 		setBackground( new Color(255, 255, 255) );
 		
 		lblSeleccionCarpeta = new JLabel("Seleccionar Carpeta con Archivos .csv");
@@ -46,19 +46,20 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener( this );
-		btnBuscar.setBounds(261, 19, 89, 23);
+		btnBuscar.setBounds(304, 19, 89, 23);
 		add(btnBuscar);
 		
 		areaLog = new TextArea();
 		areaLog.setEditable( false );
 		areaLog.setFont( new Font( "Consolas", Font.PLAIN, 12 ) );
-		areaLog.setBounds(28, 90, 370, 160);
+		areaLog.setBounds(28, 90, 422, 160);
 		add(areaLog);
 		
+	
 		barraProgreso = new JProgressBar();
 		barraProgreso.setStringPainted( true );
-		barraProgreso.setBounds(232, 70, 146, 14);
-		add(barraProgreso);
+		barraProgreso.setBounds(304, 70, 146, 14);
+		add(barraProgreso);		
 		
 		
 		JLabel lblLog = new JLabel("Log:");
@@ -95,7 +96,7 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 			
 			File carpetaSeleccionada = selectorCarpeta.getSelectedFile();
 			this.archivoConcatenado = new ArchivoPuntosConcatenado( carpetaSeleccionada.getAbsolutePath(), this );
-			this.btnBuscar.setEnabled(false);
+			
 			Thread hilo = new Thread(){
 				public void run(){
 					try{
@@ -103,13 +104,15 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 						barraProgreso.setValue(1);
 						areaLog.setText( fechaHoraInicio.toString() );
 						areaLog.setText( areaLog.getText() + "\n\nConcatenando... \n" );				
-						archivoConcatenado.generarArchivoConcatenado();										
+						archivoConcatenado.generarArchivoConcatenado();	
+						btnBuscar.setEnabled(false);
 						JOptionPane.showMessageDialog(new JPanel(), "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
 						btnBuscar.setEnabled(true);
 						Date fechaHoraFin = new java.util.Date();
 						areaLog.setText( areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );	
 					}
 					catch ( Exception error ){
+						barraProgreso.setValue(0);
 						areaLog.setText( archivoConcatenado.getArchivosErroneos().toString() );
 						JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al concatenar archivo", JOptionPane.ERROR_MESSAGE );			
 						//error.printStackTrace();
