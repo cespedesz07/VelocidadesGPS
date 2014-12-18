@@ -12,7 +12,6 @@ public class Arco {
 	
 	// Atributos
 	private int idVia;
-	private String layer;
 	private String direccion;
 	private double longitud1;
 	private double latitud1;
@@ -25,9 +24,8 @@ public class Arco {
 	
 	
 	//Métodos
-	public Arco( int idVia, String layer, String direccion, double latitud1, double longitud1, double latitud2, double longitud2 ){
+	public Arco( int idVia, String direccion, double latitud1, double longitud1, double latitud2, double longitud2 ){
 		this.idVia = idVia;
-		this.layer = layer;
 		this.direccion = direccion;
 		this.latitud1 = latitud1;
 		this.longitud1 = longitud1;
@@ -55,15 +53,7 @@ public class Arco {
 
 	public void setIdVia(int idVia) {
 		this.idVia = idVia;
-	}
-
-	public String getLayer() {
-		return layer;
-	}
-
-	public void setLayer(String layer) {
-		this.layer = layer;
-	}
+	}	
 
 	public String getDireccion() {
 		return direccion;
@@ -107,7 +97,17 @@ public class Arco {
 
 	public void agregarPunto( Punto punto ) {
 		this.arregloPuntos.add( punto );
+	}
+
+	@Override
+	public String toString() {
+		return "Arco [idVia=" + idVia + ", direccion="
+				+ direccion + ", longitud1=" + longitud1 + ", latitud1="
+				+ latitud1 + ", longitud2=" + longitud2 + ", latitud2="
+				+ latitud2 + ", velocidadPromedio=" + velocidadPromedio + "]";
 	}	
+	
+	
 	
 
 }

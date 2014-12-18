@@ -17,7 +17,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	
-	private static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "LATITUDE N/S", "LONGITUDE E/W", "HEIGHT" };
+	private static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "X", "Y", "HEIGHT" };
 	
 	
 	
@@ -216,8 +216,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 			else{
 				columnasNoEncontradas.add( columna );				
 			}
-		}
-		System.out.println( Arrays.toString( columnasArchivoGPS.toArray() ) );
+		}		
 		
 		if ( !columnasNoEncontradas.isEmpty() ){
 			throw new Exception( "Las siguientes columnas no ha sido encontrada en el archivo GPS: "
@@ -226,11 +225,10 @@ public class ArchivoPuntosConcatenado extends Thread{
 		else{		
 			//Luego se inicializan los puntos y se agregan a los arcos de la red vial
 			for ( int i=1; i<this.contenidoPuntos.size(); i++ ){
-				String[] fila = this.contenidoPuntos.get(i);
-				System.out.println( Arrays.toString(fila) );
-				int index = Integer.valueOf( fila[0].replaceAll( "\\s+", "") );
-				String fecha = fila[1].replaceAll( "\\s+", "" );
-				String hora = fila[2].replaceAll( "\\s+", "" );
+				String[] fila = this.contenidoPuntos.get(i);				
+				int index = Integer.parseInt( fila[0].trim() );
+				String fecha = fila[1];
+				String hora = fila[2];
 				double latitud = Double.parseDouble( fila[3] );
 				double longitud = Double.parseDouble( fila[4] );
 				int altitud = Integer.valueOf( fila[5] );

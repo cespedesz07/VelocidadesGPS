@@ -136,7 +136,7 @@ public class JCalcular extends JPanel implements ActionListener {
 					this.lblNombreRedVial.setText( NINGUNA_RED_VIAL_CARGADA );
 					this.redVialCargada = false;
 					JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al cargar Red Vial.", JOptionPane.ERROR_MESSAGE );			
-					//error.printStackTrace();
+					error.printStackTrace();
 				}
 			}
 		}

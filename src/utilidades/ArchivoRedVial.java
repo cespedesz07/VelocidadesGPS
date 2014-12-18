@@ -12,7 +12,7 @@ import clasesVelocidad.RedVial;
 public class ArchivoRedVial {
 	
 	
-	private static final String[] COLUMNAS_RED_VIAL = { "Layer", "ID_Via", "Direccion", "Latitud1", "Longitud1", "Latitud2", "Longitud2" };		
+	private static final String[] COLUMNAS_RED_VIAL = { "ID_VIA", "DIRECC", "X1", "Y1", "X2", "Y2" };		
 	private String rutaOrigen;
 	private ArrayList<String[]> contenidoRedVial;	
 	private String delimitador;		
@@ -97,26 +97,27 @@ public class ArchivoRedVial {
 			}
 			
 		}
+		System.out.println( Arrays.toString(indicesColumnas.toArray()) );
 		if ( !columnasNoEncontradas.isEmpty() ){
 			throw new Exception( "Las siguientes columnas no ha sido encontrada en la Red Vial: "
 					+ "\n" + Arrays.toString( columnasNoEncontradas.toArray() ) );
 		}
 		else{		
 			int idVia = 0;
-			String layer = "", direccion = "";
+			String direccion = "";
 			double latitud1 = 0.0, longitud1 = 0.0, latitud2 = 0.0, longitud2 = 0.0; 
 			//Luego de Tener los indices, se utilizan para consultar las columnas de interes
 			for ( int i=1; i<this.contenidoRedVial.size(); i++ ){
 				String[] fila = this.contenidoRedVial.get(i);
-				layer = fila[ indicesColumnas.get(0) ];
-				idVia = Integer.valueOf( fila[ indicesColumnas.get(1) ] );
-				direccion = fila[ indicesColumnas.get(2) ];
-				latitud1 = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );
-				longitud1 = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
-				latitud2 = obtenerCoordenada( fila[ indicesColumnas.get(5) ] );
-				longitud2 = obtenerCoordenada( fila[ indicesColumnas.get(6) ] );			
-				Arco arco = new Arco( idVia, layer, direccion, latitud1, longitud1, latitud1, longitud1 );
-				this.redVial.agregarArco(arco);
+				idVia = Integer.valueOf( fila[ indicesColumnas.get(0) ] );
+				direccion = fila[ indicesColumnas.get(1) ];
+				latitud1 = obtenerCoordenada( fila[ indicesColumnas.get(2) ] );
+				longitud1 = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );
+				latitud2 = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
+				longitud2 = obtenerCoordenada( fila[ indicesColumnas.get(5) ] );			
+				Arco arco = new Arco( idVia, direccion, latitud1, longitud1, latitud1, longitud1 );
+				System.out.println( arco.toString() );
+				this.redVial.agregarArco(arco);				
 			}
 		}
 	}
