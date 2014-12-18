@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 
+import clasesVelocidad.RedVial;
 import utilidades.ArchivoPuntosConcatenado;
 import utilidades.ArchivoRedVial;
 
@@ -36,6 +37,16 @@ public class JCalcular extends JPanel implements ActionListener {
 	private ArchivoRedVial archivoRedVial;
 	private JFileChooser selectorPuntosGPS;
 	private ArchivoPuntosConcatenado archivoPuntosGPS;
+	private JButton btnBuscarRedVial;
+	private JButton btnBuscarGPS;
+	private JButton btnCalcular;
+	private JLabel lblNombreRedVial;
+	private JLabel lblNombreArchivoGps;
+	private JLabel iconoRedVial;
+	private JLabel iconoArchivoGPS;
+	
+	private boolean redVialCargada;
+	private boolean archivoGPSCargado;
 	
 
 	/**
@@ -46,9 +57,13 @@ public class JCalcular extends JPanel implements ActionListener {
 		setBackground( new Color(255, 255, 255) );
 		setBorder( new TitledBorder("Cálculo Velocidades") );
 		
+		this.redVialCargada = false;
+		this.archivoGPSCargado = false;
+		
 		JLabel lblSeleecionarLaRed = new JLabel("Seleccionar la Red Vial");
 		lblSeleecionarLaRed.setBounds(22, 39, 122, 16);
 		add(lblSeleecionarLaRed);
+		
 		
 		JLabel lblSeleccionarElArchivo = new JLabel("Seleccionar el archivo GPS");
 		lblSeleccionarElArchivo.setBounds(22, 73, 134, 16);
@@ -58,41 +73,41 @@ public class JCalcular extends JPanel implements ActionListener {
 		lblCalcularVelocidad.setBounds(22, 120, 134, 16);
 		add(lblCalcularVelocidad);
 		
-		JButton btnBuscarRedVial = new JButton("Buscar");
+		btnBuscarRedVial = new JButton("Buscar");
 		btnBuscarRedVial.setActionCommand( BUSCAR_RED_VIAL );
 		btnBuscarRedVial.addActionListener( this );
 		btnBuscarRedVial.setBounds(161, 33, 72, 29);
 		add(btnBuscarRedVial);
 		
-		JButton btnBuscarGPS = new JButton("Buscar");
+		btnBuscarGPS = new JButton("Buscar");
 		btnBuscarGPS.setActionCommand( BUSCAR_PUNTOS_CONCATENADOS_GPS );
 		btnBuscarGPS.addActionListener( this );
 		btnBuscarGPS.setBounds(161, 69, 72, 29);
 		add(btnBuscarGPS);
 		
-		JButton btnCalcular = new JButton("Calcular");
+		btnCalcular = new JButton("Calcular");
 		btnCalcular.setActionCommand( CALCULAR_VELOCIDADES );
 		btnCalcular.addActionListener( this );
 		btnCalcular.setBounds(161, 114, 72, 29);
 		add(btnCalcular);
 		
-		JLabel iconoRedVial = new JLabel("");
+		iconoRedVial = new JLabel("");
 		iconoRedVial.setIcon( ICONO_NO_OK );
-		iconoRedVial.setBounds(417, 41, 36, 14);
+		iconoRedVial.setBounds(442, 26, 36, 36);
 		add(iconoRedVial);
 		
-		JLabel iconoArchivoGPS = new JLabel("");
+		iconoArchivoGPS = new JLabel("");
 		iconoArchivoGPS.setIcon( ICONO_NO_OK );
-		iconoArchivoGPS.setBounds(417, 75, 36, 14);
+		iconoArchivoGPS.setBounds(442, 73, 36, 36);
 		add(iconoArchivoGPS);
 		
-		JLabel lblNombreRedVial = new JLabel(NINGUNA_RED_VIAL_CARGADA);
-		lblNombreRedVial.setBounds(243, 40, 141, 14);
+		lblNombreRedVial = new JLabel(NINGUNA_RED_VIAL_CARGADA);
+		lblNombreRedVial.setBounds(243, 40, 198, 14);
 		add(lblNombreRedVial);
 		
-		JLabel lblningnArchivoGps = new JLabel(NINGUN_ARCHIVO_GPS_CARGADO);
-		lblningnArchivoGps.setBounds(243, 74, 157, 14);
-		add(lblningnArchivoGps);
+		lblNombreArchivoGps = new JLabel(NINGUN_ARCHIVO_GPS_CARGADO);
+		lblNombreArchivoGps.setBounds(243, 74, 198, 14);
+		add(lblNombreArchivoGps);
 
 	}
 
@@ -110,34 +125,51 @@ public class JCalcular extends JPanel implements ActionListener {
 					this.archivoRedVial = new ArchivoRedVial( redVialCargada.getAbsolutePath() );
 					this.archivoRedVial.cargarRedVial();
 					this.archivoRedVial.inicializarArcos();
-					JOptionPane.showMessageDialog(new JPanel(), "Arcos cargados exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+					this.iconoRedVial.setIcon( ICONO_OK );
+					this.lblNombreRedVial.setText( redVialCargada.getName() );
+					this.redVialCargada = true;
+					JOptionPane.showMessageDialog(new JPanel(), "Arcos cargados exitosamente.", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+					
 				}
-				catch ( Exception error ){					
+				catch ( Exception error ){
+					this.iconoRedVial.setIcon( ICONO_NO_OK );
+					this.lblNombreRedVial.setText( NINGUNA_RED_VIAL_CARGADA );
+					this.redVialCargada = false;
 					JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al cargar Red Vial.", JOptionPane.ERROR_MESSAGE );			
-					error.printStackTrace();
+					//error.printStackTrace();
 				}
 			}
 		}
-		else if ( boton.equals( BUSCAR_PUNTOS_CONCATENADOS_GPS ) ){
-			this.selectorPuntosGPS = new JFileChooser();
-			this.selectorPuntosGPS.setFileSelectionMode( JFileChooser.FILES_ONLY );
-			int opcion = this.selectorPuntosGPS.showOpenDialog(this);
-			if ( opcion == JFileChooser.APPROVE_OPTION ){
-				try{
-					File archivoPuntosGPS = this.selectorPuntosGPS.getSelectedFile();
-					this.archivoPuntosGPS = new ArchivoPuntosConcatenado( archivoPuntosGPS.getAbsolutePath(), null );
-					this.archivoPuntosGPS.cargarPuntosConcatenados();
-					this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
-					JOptionPane.showMessageDialog(new JPanel(), "Arcos cargados exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
-				}
-				catch ( Exception error ){					
-					JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al cargar Red Vial.", JOptionPane.ERROR_MESSAGE );			
-					error.printStackTrace();
+		else if ( boton.equals( BUSCAR_PUNTOS_CONCATENADOS_GPS ) ){			
+			if ( this.redVialCargada == true ){
+				this.selectorPuntosGPS = new JFileChooser();
+				this.selectorPuntosGPS.setFileSelectionMode( JFileChooser.FILES_ONLY );
+				int opcion = this.selectorPuntosGPS.showOpenDialog(this);
+				if ( opcion == JFileChooser.APPROVE_OPTION ){
+					try{
+						File archivoPuntosGPS = this.selectorPuntosGPS.getSelectedFile();
+						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, archivoPuntosGPS.getAbsolutePath(), null );
+						this.archivoPuntosGPS.cargarPuntosConcatenados();
+						this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
+						JOptionPane.showMessageDialog(this, "Arcos cargados exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+					}
+					catch ( Exception error ){					
+						JOptionPane.showMessageDialog(this, error.getMessage(), "Error al cargar Red Vial.", JOptionPane.ERROR_MESSAGE );			
+						error.printStackTrace();
+					}
 				}
 			}
+			else{
+				JOptionPane.showMessageDialog(this, "Por favor cargue primero la red vial", "Error al cargar puntos GPS", JOptionPane.ERROR_MESSAGE );
+			}
 		}
-		else if ( evento.equals( CALCULAR_VELOCIDADES ) ){
-			//TODO Completar
+		else if ( boton.equals( CALCULAR_VELOCIDADES ) ){
+			if ( this.redVialCargada == true  &&  this.archivoGPSCargado == true ){
+				//TODO CALCULAR VELOCIDADES
+			}
+			else{
+				JOptionPane.showMessageDialog(this, "Por favor cargue la red vial y el archivo con los puntos GPS.", "Error al calcular velocidades", JOptionPane.ERROR_MESSAGE );
+			}
 		}
 	}
 }

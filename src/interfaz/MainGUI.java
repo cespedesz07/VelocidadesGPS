@@ -15,17 +15,17 @@ public class MainGUI extends JFrame implements WindowListener {
 	
 	
 	public MainGUI(){
-		setSize( 480, 620 );
+		setSize( 500, 620 );
 		setTitle( "Pantalla Inicial" );	
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
-		setLayout( new GridLayout(2,1)  );
+		getContentPane().setLayout( new GridLayout(2,1)  );
 		addWindowListener( this );
 		
 		this.panelSeleccionCarpeta = new PanelConcatenadoPuntos();
-		add( this.panelSeleccionCarpeta );
+		getContentPane().add( this.panelSeleccionCarpeta );
 		
 		this.panelCalculoVelocidades = new JCalcular();
-		add( this.panelCalculoVelocidades );
+		getContentPane().add( this.panelCalculoVelocidades );
 	}
 	
 	

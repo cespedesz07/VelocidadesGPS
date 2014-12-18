@@ -52,13 +52,13 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 		areaLog = new TextArea();
 		areaLog.setEditable( false );
 		areaLog.setFont( new Font( "Consolas", Font.PLAIN, 12 ) );
-		areaLog.setBounds(28, 90, 422, 160);
+		areaLog.setBounds(42, 90, 422, 160);
 		add(areaLog);
 		
 	
 		barraProgreso = new JProgressBar();
 		barraProgreso.setStringPainted( true );
-		barraProgreso.setBounds(304, 70, 146, 14);
+		barraProgreso.setBounds(318, 70, 146, 14);
 		add(barraProgreso);		
 		
 		
@@ -95,7 +95,7 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 		if ( opcion == JFileChooser.APPROVE_OPTION ){
 			
 			File carpetaSeleccionada = selectorCarpeta.getSelectedFile();
-			this.archivoConcatenado = new ArchivoPuntosConcatenado( carpetaSeleccionada.getAbsolutePath(), this );
+			this.archivoConcatenado = new ArchivoPuntosConcatenado( carpetaSeleccionada.getAbsolutePath(), null, this );
 			
 			Thread hilo = new Thread(){
 				public void run(){

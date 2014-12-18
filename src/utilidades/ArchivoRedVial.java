@@ -47,17 +47,18 @@ public class ArchivoRedVial {
 		if ( redVial.exists() ){
 			if ( redVial.isFile() ){
 				if ( obtenerExtension( redVial ).equals( "csv" ) ){
-					Scanner entrada = new Scanner( redVial );				
-					if ( entrada.hasNext(";") ){
-						this.delimitador = "\\;";
+					Scanner entrada = new Scanner( redVial );
+					String primerLinea = entrada.nextLine();
+					if ( primerLinea.contains(";") ){
+						this.delimitador = ";";
 					}
-					else if ( entrada.hasNext(",") ){
-						this.delimitador = "\\,";
-					}				
-					System.out.println( this.delimitador );
+					else if ( primerLinea.contains(",") ){
+						this.delimitador = ",";
+					}
+					this.contenidoRedVial.add( primerLinea.split(this.delimitador) );
 					while ( entrada.hasNext() ){
-						String[] lineaPartida = entrada.nextLine().split( ";" );
-						this.contenidoRedVial.add( lineaPartida );
+						String[] linea = entrada.nextLine().split( this.delimitador );
+						this.contenidoRedVial.add( linea );
 					}
 				}
 				else{
@@ -84,6 +85,7 @@ public class ArchivoRedVial {
 		//Primero se obtiene los indices de las columnas
 		List<String> columnasRedVial = Arrays.asList( this.contenidoRedVial.get(0) );
 		ArrayList<Integer> indicesColumnas = new ArrayList<Integer>();
+		ArrayList<String> columnasNoEncontradas = new ArrayList<String>();
 		int indiceColumna = 0;
 		for ( String columna : COLUMNAS_RED_VIAL ){
 			indiceColumna = columnasRedVial.indexOf( columna );
@@ -91,29 +93,39 @@ public class ArchivoRedVial {
 				indicesColumnas.add( indiceColumna );
 			}
 			else{
-				throw new Exception( "La columna [ " + columna + " ] no ha sido encontrada en la Red Vial. " );
+				columnasNoEncontradas.add( columna );				
 			}
 			
 		}
-		System.out.println( Arrays.toString( indicesColumnas.toArray() ) );
-		
-		int idVia = 0;
-		String layer = "", direccion = "";
-		double latitud1 = 0.0, longitud1 = 0.0, latitud2 = 0.0, longitud2 = 0.0; 
-		//Luego de Tener los indices, se utilizan para consultar las columnas de interes
-		for ( int i=1; i<this.contenidoRedVial.size(); i++ ){
-			String[] fila = this.contenidoRedVial.get(i);
-			System.out.println( Arrays.toString(fila) );
-			layer = fila[ indicesColumnas.get(0) ];
-			idVia = Integer.valueOf( fila[ indicesColumnas.get(1) ] );
-			direccion = fila[ indicesColumnas.get(2) ];
-			latitud1 = Double.parseDouble( fila[ indicesColumnas.get(3) ] );
-			longitud1 = Double.parseDouble( fila[ indicesColumnas.get(4) ] );
-			latitud2 = Double.parseDouble( fila[ indicesColumnas.get(5) ] );
-			longitud2 = Double.parseDouble( fila[ indicesColumnas.get(6) ] );			
-			Arco arco = new Arco( idVia, layer, direccion, latitud1, longitud1, latitud1, longitud1 );
-			this.redVial.agregarArco(arco);
+		if ( !columnasNoEncontradas.isEmpty() ){
+			throw new Exception( "Las siguientes columnas no ha sido encontrada en la Red Vial: "
+					+ "\n" + Arrays.toString( columnasNoEncontradas.toArray() ) );
 		}
+		else{		
+			int idVia = 0;
+			String layer = "", direccion = "";
+			double latitud1 = 0.0, longitud1 = 0.0, latitud2 = 0.0, longitud2 = 0.0; 
+			//Luego de Tener los indices, se utilizan para consultar las columnas de interes
+			for ( int i=1; i<this.contenidoRedVial.size(); i++ ){
+				String[] fila = this.contenidoRedVial.get(i);
+				layer = fila[ indicesColumnas.get(0) ];
+				idVia = Integer.valueOf( fila[ indicesColumnas.get(1) ] );
+				direccion = fila[ indicesColumnas.get(2) ];
+				latitud1 = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );
+				longitud1 = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
+				latitud2 = obtenerCoordenada( fila[ indicesColumnas.get(5) ] );
+				longitud2 = obtenerCoordenada( fila[ indicesColumnas.get(6) ] );			
+				Arco arco = new Arco( idVia, layer, direccion, latitud1, longitud1, latitud1, longitud1 );
+				this.redVial.agregarArco(arco);
+			}
+		}
+	}
+	
+	private Double obtenerCoordenada( String numero ){
+		if ( numero.contains( "," ) ){
+			numero = numero.replace( ",", "." );
+		}
+		return Double.parseDouble( numero );
 	}
 	
 	

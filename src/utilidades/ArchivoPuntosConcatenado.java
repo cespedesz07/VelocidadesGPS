@@ -8,10 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-
-import javax.swing.SwingUtilities;
 
 import clasesVelocidad.Punto;
 import clasesVelocidad.RedVial;
@@ -20,7 +17,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	
-	private static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "LATITUDE N/S", "LONGITUDE E/W", "HEIGTH" };
+	private static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "LATITUDE N/S", "LONGITUDE E/W", "HEIGHT" };
 	
 	
 	
@@ -42,12 +39,12 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	//Métodos
-	public ArchivoPuntosConcatenado( String carpetaOrigen, PanelConcatenadoPuntos panelConcatenadoPuntos ){
+	public ArchivoPuntosConcatenado( String carpetaOrigen, String rutaOrigen, PanelConcatenadoPuntos panelConcatenadoPuntos ){
 		this.rutaCarpetaOrigen = carpetaOrigen;
 		this.rutaCarpetaDestino = carpetaOrigen + "//resultado";
 		this.nombreArchivoResultado = "concatenado.csv";		
 		this.contenidoTemp = "";
-		this.rutaOrigen = "";
+		this.rutaOrigen = rutaOrigen;
 		this.contenidoPuntos = new ArrayList<String[]>();
 		this.archivosErroneos = new HashMap<String, String>();
 		this.panelConcatenadoPuntos = panelConcatenadoPuntos;
@@ -171,49 +168,75 @@ public class ArchivoPuntosConcatenado extends Thread{
 	 * Método que carga el archivo de los puntos del GPS concatenado y los agrega al arreglo temporal
 	 * 
 	 */
-	public void cargarPuntosConcatenados() throws FileNotFoundException{
+	public void cargarPuntosConcatenados() throws Exception{
 		File puntosGPS = new File( this.rutaOrigen );
 		if ( puntosGPS.exists() ){
 			if ( puntosGPS.isFile() ){
-				Scanner entrada = new Scanner( puntosGPS );
-				
-				if ( entrada.hasNext(";") ){
-					this.delimitador = ";";
+				if ( obtenerExtension( puntosGPS ).equals( "csv" ) ){
+					Scanner entrada = new Scanner( puntosGPS );
+					String primerLinea = entrada.nextLine();
+					if ( primerLinea.contains(";") ){
+						this.delimitador = ";";
+					}
+					else if ( primerLinea.contains(",") ){
+						this.delimitador = ",";
+					}
+					this.contenidoPuntos.add( primerLinea.split(this.delimitador) );
+					while ( entrada.hasNext() ){
+						String[] linea = entrada.nextLine().split( this.delimitador );
+						this.contenidoPuntos.add( linea );
+					}
 				}
-				else if ( entrada.hasNext(",") ){
-					this.delimitador = ",";
-				}
-				while ( entrada.hasNext() ){
-					String[] linea = entrada.nextLine().split( this.delimitador );
-					this.contenidoPuntos.add( linea );
+				else{
+					throw new Exception( "El archivo seleccionado no tiene extensión .csv" );
 				}
 			}
+			else{
+				throw new Exception( "El objeto seleccionado no es un archivo." );
+			}
+		}
+		else{
+			throw new Exception( "El archivo no existe" );
 		}
 	}
 	
 	
 	
-	public void inicializarPuntos( RedVial redVial ){
+	public void inicializarPuntos( RedVial redVial ) throws Exception{
 		//Primero se obtiene los indices de las columnas
-		List<String> columnasRedVial = Arrays.asList( this.contenidoPuntos.get(0) );
+		List<String> columnasArchivoGPS = Arrays.asList( this.contenidoPuntos.get(0) );
 		ArrayList<Integer> indicesColumnas = new ArrayList<Integer>();
+		ArrayList<String> columnasNoEncontradas = new ArrayList<String>();
 		int indiceColumna = 0;
 		for ( String columna : COLUMNAS_PUNTOS ){
-			indiceColumna = columnasRedVial.indexOf( columna );
-			indicesColumnas.add( indiceColumna );
+			indiceColumna = columnasArchivoGPS.indexOf( columna );
+			if ( indiceColumna != -1 ){
+				indicesColumnas.add( indiceColumna );
+			}
+			else{
+				columnasNoEncontradas.add( columna );				
+			}
 		}
+		System.out.println( Arrays.toString( columnasArchivoGPS.toArray() ) );
 		
-		//Luego se inicializan los puntos y se agregan a los arcos de la red vial
-		for ( int i=1; i<this.contenidoPuntos.size(); i++ ){
-			String[] fila = this.contenidoPuntos.get(i);
-			int index = Integer.valueOf( fila[0] );
-			String fecha = fila[1];
-			String hora = fila[2];
-			double latitud = Double.parseDouble( fila[3] );
-			double longitud = Double.parseDouble( fila[4] );
-			int altitud = Integer.valueOf( fila[5] );
-			Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);
-			redVial.ubicarPunto( punto );
+		if ( !columnasNoEncontradas.isEmpty() ){
+			throw new Exception( "Las siguientes columnas no ha sido encontrada en el archivo GPS: "
+					+ "\n" + Arrays.toString( columnasNoEncontradas.toArray() ) );
+		}
+		else{		
+			//Luego se inicializan los puntos y se agregan a los arcos de la red vial
+			for ( int i=1; i<this.contenidoPuntos.size(); i++ ){
+				String[] fila = this.contenidoPuntos.get(i);
+				System.out.println( Arrays.toString(fila) );
+				int index = Integer.valueOf( fila[0].replaceAll( "\\s+", "") );
+				String fecha = fila[1].replaceAll( "\\s+", "" );
+				String hora = fila[2].replaceAll( "\\s+", "" );
+				double latitud = Double.parseDouble( fila[3] );
+				double longitud = Double.parseDouble( fila[4] );
+				int altitud = Integer.valueOf( fila[5] );
+				Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);
+				redVial.ubicarPunto( punto );
+			}
 		}
 				
 	}
