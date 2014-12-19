@@ -102,6 +102,16 @@ public class Punto {
 	public void setHeigth(int heigth) {
 		this.heigth = heigth;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Punto [index=" + index + ", date=" + date + ", time=" + time
+				+ ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", heigth=" + heigth + "]";
+	}
+	
+	
 	
 	
 

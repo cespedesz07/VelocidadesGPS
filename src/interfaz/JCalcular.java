@@ -151,10 +151,16 @@ public class JCalcular extends JPanel implements ActionListener {
 						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, archivoPuntosGPS.getAbsolutePath(), null );
 						this.archivoPuntosGPS.cargarPuntosConcatenados();
 						this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
-						JOptionPane.showMessageDialog(this, "Arcos cargados exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+						this.iconoArchivoGPS.setIcon( ICONO_OK );
+						this.lblNombreArchivoGps.setText( archivoPuntosGPS.getName() );
+						this.archivoGPSCargado = true;
+						JOptionPane.showMessageDialog(this, "Puntos GPS cargados exitosamente.", "Exito!", JOptionPane.INFORMATION_MESSAGE );
 					}
-					catch ( Exception error ){					
-						JOptionPane.showMessageDialog(this, error.getMessage(), "Error al cargar Red Vial.", JOptionPane.ERROR_MESSAGE );			
+					catch ( Exception error ){	
+						this.iconoArchivoGPS.setIcon( ICONO_NO_OK );
+						this.lblNombreArchivoGps.setText( NINGUN_ARCHIVO_GPS_CARGADO );
+						this.archivoGPSCargado = false;
+						JOptionPane.showMessageDialog(this, error.getMessage(), "Error al cargar Puntos GPS.", JOptionPane.ERROR_MESSAGE );			
 						error.printStackTrace();
 					}
 				}

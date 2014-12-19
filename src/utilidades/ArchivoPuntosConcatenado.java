@@ -217,7 +217,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 				columnasNoEncontradas.add( columna );				
 			}
 		}		
-		
+		System.out.println( Arrays.toString(indicesColumnas.toArray()) );
 		if ( !columnasNoEncontradas.isEmpty() ){
 			throw new Exception( "Las siguientes columnas no ha sido encontrada en el archivo GPS: "
 					+ "\n" + Arrays.toString( columnasNoEncontradas.toArray() ) );
@@ -226,13 +226,14 @@ public class ArchivoPuntosConcatenado extends Thread{
 			//Luego se inicializan los puntos y se agregan a los arcos de la red vial
 			for ( int i=1; i<this.contenidoPuntos.size(); i++ ){
 				String[] fila = this.contenidoPuntos.get(i);				
-				int index = Integer.parseInt( fila[0].trim() );
-				String fecha = fila[1];
-				String hora = fila[2];
-				double latitud = Double.parseDouble( fila[3] );
-				double longitud = Double.parseDouble( fila[4] );
-				int altitud = Integer.valueOf( fila[5] );
+				int index = Integer.parseInt( fila[ indicesColumnas.get(0) ].trim() );
+				String fecha = fila[ indicesColumnas.get(1) ];
+				String hora = fila[ indicesColumnas.get(2) ];
+				double latitud = Double.parseDouble( fila[ indicesColumnas.get(3) ] );
+				double longitud = Double.parseDouble( fila[ indicesColumnas.get(4) ] );
+				int altitud = Integer.valueOf( fila[ indicesColumnas.get(5) ] );
 				Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);
+				System.out.println( punto.toString() );
 				redVial.ubicarPunto( punto );
 			}
 		}
