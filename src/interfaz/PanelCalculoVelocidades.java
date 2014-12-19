@@ -34,9 +34,8 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 	private static final ImageIcon ICONO_OK = new ImageIcon( "img/emblem-ok.png" );
 	private static final ImageIcon ICONO_NO_OK = new ImageIcon( "img/gtk-no.png" );
 	
-	private JFileChooser selectorRedVial;
+	
 	private ArchivoRedVial archivoRedVial;
-	private JFileChooser selectorPuntosGPS;
 	private ArchivoPuntosConcatenado archivoPuntosGPS;
 	private JButton btnBuscarRedVial;
 	private JButton btnBuscarGPS;
@@ -53,7 +52,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 	/**
 	 * Create the panel.
 	 */
-	public PanelCalculoVelocidades() {
+	public PanelCalculoVelocidades( PanelArbolArcosPuntos panelArbolArcosPuntos ) {
 		setLayout(null);
 		setBackground( new Color(255, 255, 255) );
 		setBorder( new TitledBorder("Cálculo Velocidades") );
@@ -158,13 +157,14 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 						//this.lblNombreArchivoGps.setText( archivoPuntosGPS.getName() );
 						this.archivoGPSCargado = true;
 						JOptionPane.showMessageDialog(this, "Puntos GPS cargados exitosamente.", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+						new FrameArbolArcosPuntos( this.archivoRedVial.getRedVial() ).setVisible( true );
 					}
 					catch ( Exception error ){	
 						this.iconoArchivoGPS.setIcon( ICONO_NO_OK );
 						this.lblNombreArchivoGps.setText( NINGUN_ARCHIVO_GPS_CARGADO );
 						this.archivoGPSCargado = false;
 						JOptionPane.showMessageDialog(this, error.getMessage(), "Error al cargar Puntos GPS.", JOptionPane.ERROR_MESSAGE );			
-						//error.printStackTrace();
+						error.printStackTrace();
 					}
 				//}
 			}
@@ -175,18 +175,12 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 		else if ( boton.equals( CALCULAR_VELOCIDADES ) ){
 			if ( this.redVialCargada == true  &&  this.archivoGPSCargado == true ){
 				try {
-					JFileChooser selector = new JFileChooser( "C://Users//unalman//Desktop" );					
-					int opcion = selector.showSaveDialog(this);
-					if ( opcion == JFileChooser.APPROVE_OPTION ){
-						File archivo = selector.getSelectedFile();
-						this.archivoRedVial.getRedVial().guardarArcosPuntos(archivo);
-						JOptionPane.showMessageDialog( this, "Archivo Arco Puntos generado exitosamente", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
-					}
-					
+					this.archivoRedVial.getRedVial().guardarArcosPuntos( new File("C://Users//unalman//Desktop//prueba.csv") );
+					JOptionPane.showMessageDialog( this, "Archivo Arco Puntos generado exitosamente", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
 				} 
 				catch (FileNotFoundException e) {					
 					e.printStackTrace();
-				}			
+				}							
 			}			
 			else{
 				JOptionPane.showMessageDialog(this, "Por favor cargue la red vial y el archivo con los puntos GPS.", "Error al calcular velocidades", JOptionPane.ERROR_MESSAGE );

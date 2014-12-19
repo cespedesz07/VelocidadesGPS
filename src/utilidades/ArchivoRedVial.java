@@ -96,8 +96,7 @@ public class ArchivoRedVial {
 				columnasNoEncontradas.add( columna );				
 			}
 			
-		}
-		System.out.println( Arrays.toString(indicesColumnas.toArray()) );
+		}		
 		if ( !columnasNoEncontradas.isEmpty() ){
 			throw new Exception( "Las siguientes columnas no ha sido encontrada en la Red Vial: "
 					+ "\n" + Arrays.toString( columnasNoEncontradas.toArray() ) );
@@ -116,7 +115,6 @@ public class ArchivoRedVial {
 				latitud2 = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
 				longitud2 = obtenerCoordenada( fila[ indicesColumnas.get(5) ] );			
 				Arco arco = new Arco( idVia, direccion, latitud1, longitud1, latitud1, longitud1 );
-				System.out.println( arco.toString() );
 				this.redVial.agregarArco(arco);				
 			}
 		}

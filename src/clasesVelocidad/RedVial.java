@@ -46,10 +46,12 @@ public class RedVial {
 	 * latitudes y longitudes 1 y 2 del arco.
 	 */
 	public void ubicarPunto( Punto punto ){
-		for ( Arco arco : this.arregloArcos ){
+		for ( Arco arco : this.arregloArcos ){			
+			
 			if ( arco.getLatitud1() <= punto.getLatitude()  &&  punto.getLatitude() <= arco.getLatitud2()   &&   
 					arco.getLongitud1() <= punto.getLongitude()  &&  punto.getLongitude() <= arco.getLongitud1()	){
 				arco.agregarPunto( punto );
+				System.out.println( "Punto Agregado: " + punto.toString() + " en Arco: " + arco.getIdVia() );
 			}
 		}
 	}

@@ -217,8 +217,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 			else{
 				columnasNoEncontradas.add( columna );				
 			}
-		}		
-		System.out.println( Arrays.toString(indicesColumnas.toArray()) );
+		}
 		if ( !columnasNoEncontradas.isEmpty() ){
 			throw new Exception( "Las siguientes columnas no ha sido encontrada en el archivo GPS: "
 					+ "\n" + Arrays.toString( columnasNoEncontradas.toArray() ) );
@@ -233,8 +232,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 				double latitud = Double.parseDouble( fila[ indicesColumnas.get(3) ] );
 				double longitud = Double.parseDouble( fila[ indicesColumnas.get(4) ] );
 				int altitud = Integer.valueOf( fila[ indicesColumnas.get(5) ] );
-				Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);
-				System.out.println( punto.toString() );
+				Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);				
 				redVial.ubicarPunto( punto );
 			}
 		}

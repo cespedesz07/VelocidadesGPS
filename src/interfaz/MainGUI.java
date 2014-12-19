@@ -11,6 +11,7 @@ public class MainGUI extends JFrame implements WindowListener {
 	
 	private PanelConcatenadoPuntos panelSeleccionCarpeta;
 	private PanelCalculoVelocidades panelCalculoVelocidades;
+	private PanelArbolArcosPuntos panelArbolArcosPuntos;
 	
 	
 	
@@ -24,8 +25,9 @@ public class MainGUI extends JFrame implements WindowListener {
 		this.panelSeleccionCarpeta = new PanelConcatenadoPuntos();
 		getContentPane().add( this.panelSeleccionCarpeta );
 		
-		this.panelCalculoVelocidades = new PanelCalculoVelocidades();
-		getContentPane().add( this.panelCalculoVelocidades );
+		
+		this.panelCalculoVelocidades = new PanelCalculoVelocidades( this.panelArbolArcosPuntos );
+		getContentPane().add( this.panelCalculoVelocidades );	
 	}
 	
 	
