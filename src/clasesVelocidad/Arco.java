@@ -13,10 +13,10 @@ public class Arco {
 	// Atributos
 	private int idVia;
 	private String direccion;
-	private double longitud1;
 	private double latitud1;
-	private double longitud2;
+	private double longitud1;
 	private double latitud2;
+	private double longitud2;	
 	private double velocidadPromedio;
 	
 	private ArrayList<Punto> arregloPuntos;
@@ -98,14 +98,17 @@ public class Arco {
 	public void agregarPunto( Punto punto ) {
 		this.arregloPuntos.add( punto );
 	}
+	
+	public ArrayList<Punto> getArregloPuntos(){
+		return this.arregloPuntos;
+	}
 
 	@Override
 	public String toString() {
-		return "Arco [idVia=" + idVia + ", direccion="
-				+ direccion + ", longitud1=" + longitud1 + ", latitud1="
-				+ latitud1 + ", longitud2=" + longitud2 + ", latitud2="
-				+ latitud2 + ", velocidadPromedio=" + velocidadPromedio + "]";
-	}	
+		return idVia + "; " + direccion	+ "; " + latitud1 + "; " + longitud1 + "; " + latitud2 + "; " + longitud2 + "; " + velocidadPromedio + "";
+	}
+
+		
 	
 	
 	

@@ -106,9 +106,7 @@ public class Punto {
 
 	@Override
 	public String toString() {
-		return "Punto [index=" + index + ", date=" + date + ", time=" + time
-				+ ", latitude=" + latitude + ", longitude=" + longitude
-				+ ", heigth=" + heigth + "]";
+		return "" + index + "; " + date + "; " + time + "; " + latitude + "; " + longitude + "; " + heigth + "";
 	}
 	
 	

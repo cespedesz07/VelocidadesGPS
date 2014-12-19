@@ -101,15 +101,14 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 				public void run(){
 					try{
 						Date fechaHoraInicio = new java.util.Date();
-						barraProgreso.setValue(1);
 						areaLog.setText( fechaHoraInicio.toString() );
 						areaLog.setText( areaLog.getText() + "\n\nConcatenando... \n" );				
 						archivoConcatenado.generarArchivoConcatenado();	
 						btnBuscar.setEnabled(false);
-						JOptionPane.showMessageDialog(new JPanel(), "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
-						btnBuscar.setEnabled(true);
 						Date fechaHoraFin = new java.util.Date();
-						areaLog.setText( areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );	
+						areaLog.setText( areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );
+						JOptionPane.showMessageDialog(new JPanel(), "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
+						btnBuscar.setEnabled(true);							
 					}
 					catch ( Exception error ){
 						barraProgreso.setValue(0);

@@ -12,7 +12,7 @@ import clasesVelocidad.RedVial;
 public class ArchivoRedVial {
 	
 	
-	private static final String[] COLUMNAS_RED_VIAL = { "ID_VIA", "DIRECC", "X1", "Y1", "X2", "Y2" };		
+	public static final String[] COLUMNAS_RED_VIAL = { "ID_VIA", "DIRECC", "X1", "Y1", "X2", "Y2" };		
 	private String rutaOrigen;
 	private ArrayList<String[]> contenidoRedVial;	
 	private String delimitador;		

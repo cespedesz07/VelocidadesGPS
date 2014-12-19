@@ -17,7 +17,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	
-	private static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "X", "Y", "HEIGHT" };
+	public static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "X", "Y", "HEIGHT" };
 	
 	
 	
@@ -87,6 +87,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 							}							
 							while ( entrada.hasNext() ){								
 								String linea = entrada.nextLine(); 
+								System.out.println( linea );
 								this.contenidoTemp += linea + "\n";
 							}
 							
@@ -183,9 +184,9 @@ public class ArchivoPuntosConcatenado extends Thread{
 					}
 					this.contenidoPuntos.add( primerLinea.split(this.delimitador) );
 					while ( entrada.hasNext() ){
-						String[] linea = entrada.nextLine().split( this.delimitador );
+						String[] linea = entrada.nextLine().split( this.delimitador );						
 						this.contenidoPuntos.add( linea );
-					}
+					}					
 				}
 				else{
 					throw new Exception( "El archivo seleccionado no tiene extensión .csv" );
