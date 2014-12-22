@@ -17,7 +17,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	
-	public static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "X", "Y", "HEIGHT", "FID_2" };
+	public static final String[] COLUMNAS_PUNTOS = { "FID_2", "DATE", "TIME", "X", "Y", "HEIGHT" };
 	
 	
 	
@@ -226,7 +226,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 			//Luego se inicializan los puntos y se agregan a los arcos de la red vial
 			for ( int i=1; i<this.contenidoPuntos.size(); i++ ){
 				String[] fila = this.contenidoPuntos.get(i);				
-				int index = Integer.parseInt( fila[ indicesColumnas.get(0) ].trim() );
+				long index = Long.parseLong( fila[ indicesColumnas.get(0) ].trim() );
 				String fecha = fila[ indicesColumnas.get(1) ];
 				String hora = fila[ indicesColumnas.get(2) ];
 				double x = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );

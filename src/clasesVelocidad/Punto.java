@@ -6,7 +6,7 @@ public class Punto {
 	
 	
 	//Atributos
-	private int index;
+	private long index;
 	private String date;
 	private String time;
 	private double Y;
@@ -16,7 +16,7 @@ public class Punto {
 	
 	
 	//Métodos
-	public Punto( int index, String date, String time, double X, double Y, int heigth ){
+	public Punto( long index, String date, String time, double X, double Y, int heigth ){
 		this.index = index;
 		this.date = date;
 		this.time = time;
@@ -46,7 +46,7 @@ public class Punto {
 	}
 
 	
-	public int getIndex() {
+	public long getIndex() {
 		return index;
 	}
 
