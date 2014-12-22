@@ -71,5 +71,46 @@ public class RedVial {
 	}
 	
 	
+	public String getInfoArco( int idVia ){
+		String infoArco = ""; 
+		for ( Arco arco : arregloArcos ){
+			if ( arco.getIdVia() == idVia ){
+				infoArco = "Id Via: \t" + arco.getIdVia() + 
+						"\nDireccion: \t" + arco.getDireccion() + 
+						"\nX1: \t" + arco.getLatitud1() +
+						"\nY1: \t" + arco.getLongitud1() +
+						"\nX2: \t" + arco.getLatitud2() +
+						"\nY2: \t" + arco.getLongitud2() +
+						"\nVel. Promedio: \t" + arco.getVelocidadPromedio();
+				return infoArco;
+			}
+		}
+		return infoArco;
+	}
+	
+	
+	public String getInfoPunto( int idVia, int indexPunto ){
+		String infoPunto = "";
+		for ( Arco arco : arregloArcos ){
+			if ( arco.getIdVia() == idVia ){
+				for ( Punto punto : arco.getArregloPuntos() ){
+					if ( punto.getIndex() == indexPunto ){
+						infoPunto = "Index: \t" + punto.getIndex() + 
+								"\nDate: \t" + punto.getDate() + 
+								"\nTime: \t" + punto.getTime() + 
+								"\nX: \t" + punto.getLongitude() + 
+								"\nY: \t" + punto.getLongitude() + 
+								"\nHeight: \t" + punto.getHeigth();
+					}
+				}
+			}
+		}
+		
+		return infoPunto;
+		
+	}
+	
+	
+	
 
 }

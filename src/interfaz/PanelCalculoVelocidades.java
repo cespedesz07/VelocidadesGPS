@@ -123,7 +123,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 				try{
 					//File redVialCargada = this.selectorRedVial.getSelectedFile();
 					//this.archivoRedVial = new ArchivoRedVial( redVialCargada.getAbsolutePath() );
-					this.archivoRedVial = new ArchivoRedVial( "C://Users//unalman//Desktop//Quibdo_Red_vial_visum_link_Lat_Long.csv" );
+					this.archivoRedVial = new ArchivoRedVial( "C://Users//UserF1//Desktop//Quibdo_Red_vial_visum_link_Lat_Long.csv" );
 					this.archivoRedVial.cargarRedVial();
 					this.archivoRedVial.inicializarArcos();
 					this.iconoRedVial.setIcon( ICONO_OK );
@@ -150,7 +150,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 					try{
 						//File archivoPuntosGPS = this.selectorPuntosGPS.getSelectedFile();
 						//this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, archivoPuntosGPS.getAbsolutePath(), null );
-						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//unalman//Desktop//GPS_PLANASQUIB.csv", null );
+						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//UserF1//Desktop//GPS_PLANASQUIB.csv", null );
 						this.archivoPuntosGPS.cargarPuntosConcatenados();
 						this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
 						this.iconoArchivoGPS.setIcon( ICONO_OK );
@@ -175,7 +175,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 		else if ( boton.equals( CALCULAR_VELOCIDADES ) ){
 			if ( this.redVialCargada == true  &&  this.archivoGPSCargado == true ){
 				try {
-					this.archivoRedVial.getRedVial().guardarArcosPuntos( new File("C://Users//unalman//Desktop//prueba.csv") );
+					this.archivoRedVial.getRedVial().guardarArcosPuntos( new File("C://Users//UserF1//Desktop//prueba.csv") );
 					JOptionPane.showMessageDialog( this, "Archivo Arco Puntos generado exitosamente", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
 				} 
 				catch (FileNotFoundException e) {					

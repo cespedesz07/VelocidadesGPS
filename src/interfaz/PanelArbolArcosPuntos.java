@@ -1,5 +1,8 @@
 package interfaz;
 
+import java.awt.BorderLayout;
+import java.util.Arrays;
+
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeExpansionEvent;
@@ -10,6 +13,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -19,94 +24,89 @@ import clasesVelocidad.Punto;
 import clasesVelocidad.RedVial;
 
 public class PanelArbolArcosPuntos extends JPanel implements TreeSelectionListener {
+	
+	private static final String LABEL_RED_VIAL = "Red Vial";
+	private static final String LABEL_ARCO = "Arco";
+	private static final String LABEL_PUNTO = "Punto";
+	
 	private JTree arbolArcosPuntos;
 	private JTextArea txtPropiedades;
 	private JLabel lblPropiedades;
+	private JScrollPane scroll;
 	
 	
 	private PanelCalculoVelocidades panelCalculoVelocidades;
+	private RedVial redVial;
 
 	
 	public PanelArbolArcosPuntos( RedVial redVial ) {
 		setBorder( new TitledBorder("Visualizar Arbol Arcos y Puntos") );
-		setLayout(null);
+		setLayout( new BorderLayout() );		//OJO!!! NO USAR EL setLayout(null) PORQUE NO APARECE EL JTREE
 		
-		arbolArcosPuntos = new JTree();
+		arbolArcosPuntos = new JTree();		
 		arbolArcosPuntos.addTreeSelectionListener( this );
-		arbolArcosPuntos.setBounds(10, 23, 243, 443);
-		add(arbolArcosPuntos);
+		arbolArcosPuntos.setBounds(10, 23, 243, 443);				
+		scroll = new JScrollPane( this.arbolArcosPuntos );
+		add(scroll, BorderLayout.WEST);
+		
 		
 		txtPropiedades = new JTextArea();
+		txtPropiedades.setEnabled( false );
+		txtPropiedades.setText( "Propiedades..." );
 		txtPropiedades.setBounds(263, 41, 227, 144);
-		add(txtPropiedades);
+		add(txtPropiedades, BorderLayout.CENTER);
 		
-		lblPropiedades = new JLabel("Propiedades de Selección: ");
-		lblPropiedades.setBounds(263, 24, 136, 14);
-		add(lblPropiedades);
 		
-		generarArbol( redVial );
+		this.redVial = redVial;
+		generarArbol();
 	}
 	
 	
 	
-	/*
-	private void crearArbol(){
-		//Raiz del arbol
+	public void generarArbol(){		
 		DefaultMutableTreeNode raiz = new DefaultMutableTreeNode( "Red Vial" );
-		
-		//Modelo de Arbol donde se agregarán los nodos
-		DefaultTreeModel modelo = new DefaultTreeModel( raiz );
-		
-		//Se agrega el modelo al componente JTree
-		arbolArcosPuntos.setModel( modelo );
-		
-		//Se agrega el evento
-		arbolArcosPuntos.addTreeSelectionListener( this );
-		
-		//Se agregan mas nodos al arbol
-		DefaultMutableTreeNode arco1 = new DefaultMutableTreeNode( "Arco 1" );
-		DefaultMutableTreeNode punto1 = new DefaultMutableTreeNode( "punto 1" );
-		DefaultMutableTreeNode punto2 = new DefaultMutableTreeNode( "punto 2" );
-		
-		//Se define dónde se inserta e nodo, dentro de qué rama y en cual posición
-		modelo.insertNodeInto(arco1, raiz, 0);
-		
-		modelo.insertNodeInto(punto1, arco1, 0);
-		modelo.insertNodeInto(punto2, arco1, 1);
-	}	
-	*/
-	
-	
-	
-	public void generarArbol( RedVial redVial ){
-		
-		DefaultMutableTreeNode raiz = new DefaultMutableTreeNode( "Red Vial" );
-		DefaultTreeModel modelo = new DefaultTreeModel( raiz );
-		
-		arbolArcosPuntos.setModel( modelo );
+		raiz.setAllowsChildren( true );
 		
 		for ( int i=0; i<redVial.getArregloArcos().size(); i++ ){
-			Arco arco = redVial.getArregloArcos().get( i );
-			if ( !arco.getArregloPuntos().isEmpty() ){
-				DefaultMutableTreeNode nodoArco = new DefaultMutableTreeNode( "Arco " + arco.getIdVia() );
-				modelo.insertNodeInto( nodoArco, raiz, i );
-				for ( int j=0; j<arco.getArregloPuntos().size(); j++ ){
-					Punto punto = arco.getArregloPuntos().get( j );
-					DefaultMutableTreeNode nodoPunto = new DefaultMutableTreeNode( "Punto " + punto.getIndex() );
-					modelo.insertNodeInto( nodoPunto, nodoArco, j );
-				}		
+			Arco arco = redVial.getArregloArcos().get( i );			
+			DefaultMutableTreeNode nodoArco = new DefaultMutableTreeNode( LABEL_ARCO + " " + arco.getIdVia() );
+			nodoArco.setAllowsChildren( true );			
+			raiz.add( nodoArco );
+			
+			for ( int j=0; j<arco.getArregloPuntos().size(); j++ ){
+				Punto punto = arco.getArregloPuntos().get( j );
+				DefaultMutableTreeNode nodoPunto = new DefaultMutableTreeNode( LABEL_PUNTO + " " + punto.getIndex() );
+				nodoPunto.setAllowsChildren( false );
+				nodoArco.add( nodoPunto );
 			}
-		}	
+			
+		}		
+		
+		DefaultTreeModel nuevoModelo = new DefaultTreeModel( raiz );
+		arbolArcosPuntos.setModel( nuevoModelo );	
 	}
+	
 
 
 	
 	@Override
 	public void valueChanged(TreeSelectionEvent evento) {
 		DefaultMutableTreeNode nodoSeleccionado = (DefaultMutableTreeNode) arbolArcosPuntos.getLastSelectedPathComponent();	
-		if ( nodoSeleccionado != null ){			
-			Object infoNodo = nodoSeleccionado.getUserObject();
-			this.txtPropiedades.setText( infoNodo.toString() );
+		if ( nodoSeleccionado != null ){	
+			//Object infoNodo = nodoSeleccionado.getUserObject();
+			TreeNode[] rutaNodo = nodoSeleccionado.getPath();
+			String[] infoNodoPartida = rutaNodo[ rutaNodo.length - 1 ].toString().split(" ");
+			
+			if ( infoNodoPartida[0].equals( LABEL_ARCO ) ){
+				int idVia = Integer.valueOf( infoNodoPartida[1] );
+				this.txtPropiedades.setText( this.redVial.getInfoArco( idVia ) );
+			}
+			else if ( infoNodoPartida[0].equals( LABEL_PUNTO ) ){
+				int idVia = Integer.valueOf( rutaNodo[ rutaNodo.length - 2 ].toString().split(" ")[1] );
+				int indexPunto = Integer.valueOf( infoNodoPartida[1] );
+				this.txtPropiedades.setText( this.redVial.getInfoPunto(idVia, indexPunto) );
+			}
+			
 		}
 	}
 }
