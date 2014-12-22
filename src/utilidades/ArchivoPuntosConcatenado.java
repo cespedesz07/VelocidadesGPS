@@ -17,7 +17,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	
 	
 	
-	public static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "X", "Y", "HEIGHT" };
+	public static final String[] COLUMNAS_PUNTOS = { "INDEX", "DATE", "TIME", "X", "Y", "HEIGHT", "FID_2" };
 	
 	
 	
@@ -229,14 +229,25 @@ public class ArchivoPuntosConcatenado extends Thread{
 				int index = Integer.parseInt( fila[ indicesColumnas.get(0) ].trim() );
 				String fecha = fila[ indicesColumnas.get(1) ];
 				String hora = fila[ indicesColumnas.get(2) ];
-				double latitud = Double.parseDouble( fila[ indicesColumnas.get(3) ] );
-				double longitud = Double.parseDouble( fila[ indicesColumnas.get(4) ] );
+				double x = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );
+				double y = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
 				int altitud = Integer.valueOf( fila[ indicesColumnas.get(5) ] );
-				Punto punto = new Punto(index, fecha, hora, latitud, longitud, altitud);				
+				//int fid_2 = Integer.valueOf( fila[ indicesColumnas.get(6) ] );
+				Punto punto = new Punto(index, fecha, hora, x, y, altitud);				
 				redVial.ubicarPunto( punto );
 			}
+			this.contenidoTemp = null;
+			System.gc();
 		}
 				
+	}
+	
+	
+	private Double obtenerCoordenada( String numero ){
+		if ( numero.contains( "," ) ){
+			numero = numero.replace( ",", "." );
+		}
+		return Double.parseDouble( numero );
 	}
 	
 	

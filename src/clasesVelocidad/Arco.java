@@ -13,27 +13,26 @@ public class Arco {
 	// Atributos
 	private int idVia;
 	private String direccion;
-	private double latitud1;
-	private double longitud1;
-	private double latitud2;
-	private double longitud2;	
+	private double X1;					//Longitud1
+	private double Y1;					//Latitud1
+	private double X2;					//Longitud2
+	private double Y2;					//Latitud2
 	private double velocidadPromedio;
 	
-	private ArrayList<Punto> arregloPuntos;
+	private ArrayList<Punto> arregloPuntos;	
 	
-	
-	
+
 	//Métodos
-	public Arco( int idVia, String direccion, double latitud1, double longitud1, double latitud2, double longitud2 ){
+	public Arco( int idVia, String direccion, double X1, double Y1, double X2, double Y2 ){
 		this.idVia = idVia;
 		this.direccion = direccion;
-		this.latitud1 = latitud1;
-		this.longitud1 = longitud1;
-		this.latitud2 = latitud2;
-		this.longitud2 = longitud1;
+		this.X1 = X1;
+		this.Y1 = Y1;
+		this.X2 = X2;
+		this.Y2 = Y2;
 		this.arregloPuntos = new ArrayList<Punto>();
 		this.velocidadPromedio = 0.0;
-	}	
+	}
 	
 	public double calcularVelocidadProm(){
 		return 0.0;
@@ -41,11 +40,7 @@ public class Arco {
 	
 	public double getVelocidadPromedio() {
 		return velocidadPromedio;
-	}	
-	
-	public void ubicarPunto( Punto punto ){
-		
-	}
+	}		
 
 	public int getIdVia() {
 		return idVia;
@@ -63,36 +58,36 @@ public class Arco {
 		this.direccion = direccion;
 	}
 
-	public double getLongitud1() {
-		return longitud1;
+	public double getX1() {
+		return X1;
 	}
 
-	public void setLongitud1(double longitud1) {
-		this.longitud1 = longitud1;
+	public void setX1(double x1) {
+		X1 = x1;
 	}
 
-	public double getLatitud1() {
-		return latitud1;
+	public double getY1() {
+		return Y1;
 	}
 
-	public void setLatitud1(double latitud1) {
-		this.latitud1 = latitud1;
+	public void setY1(double y1) {
+		Y1 = y1;
 	}
 
-	public double getLongitud2() {
-		return longitud2;
+	public double getX2() {
+		return X2;
 	}
 
-	public void setLongitud2(double longitud2) {
-		this.longitud2 = longitud2;
+	public void setX2(double x2) {
+		X2 = x2;
 	}
 
-	public double getLatitud2() {
-		return latitud2;
+	public double getY2() {
+		return Y2;
 	}
 
-	public void setLatitud2(double latitud2) {
-		this.latitud2 = latitud2;
+	public void setY2(double y2) {
+		Y2 = y2;
 	}
 
 	public void agregarPunto( Punto punto ) {
@@ -103,10 +98,13 @@ public class Arco {
 		return this.arregloPuntos;
 	}
 
+	
 	@Override
 	public String toString() {
-		return idVia + "; " + direccion	+ "; " + latitud1 + "; " + longitud1 + "; " + latitud2 + "; " + longitud2 + "; " + velocidadPromedio + "";
+		return idVia + "; " + direccion	+ "; " + X1 + "; " + Y1 + "; " + X2 + "; " + Y2 + "; " + velocidadPromedio + "";
 	}
+	
+	
 
 		
 	

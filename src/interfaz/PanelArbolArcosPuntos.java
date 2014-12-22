@@ -30,8 +30,7 @@ public class PanelArbolArcosPuntos extends JPanel implements TreeSelectionListen
 	private static final String LABEL_PUNTO = "Punto";
 	
 	private JTree arbolArcosPuntos;
-	private JTextArea txtPropiedades;
-	private JLabel lblPropiedades;
+	private JTextArea txtPropiedades;;
 	private JScrollPane scroll;
 	
 	

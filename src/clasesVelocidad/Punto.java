@@ -9,19 +9,21 @@ public class Punto {
 	private int index;
 	private String date;
 	private String time;
-	private double latitude;
-	private double longitude;
+	private double Y;
+	private double X;
 	private int heigth;
+	//private int fid_2;
 	
 	
 	//Métodos
-	public Punto( int index, String date, String time, double latitude, double longitude, int heigth ){
+	public Punto( int index, String date, String time, double X, double Y, int heigth ){
 		this.index = index;
 		this.date = date;
 		this.time = time;
-		this.latitude = latitude;
-		this.longitude = longitude;
+		this.Y = Y;
+		this.X = X;
 		this.heigth = heigth;
+		//this.fid_2 = fid_2;
 	}
 	
 	
@@ -72,25 +74,25 @@ public class Punto {
 	public void setTime(String time) {
 		this.time = time;
 	}
+	
 
-
-	public double getLatitude() {
-		return latitude;
+	public double getY() {
+		return Y;
 	}
 
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+	public void setY(double y) {
+		Y = y;
 	}
 
 
-	public double getLongitude() {
-		return longitude;
+	public double getX() {
+		return X;
 	}
 
 
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	public void setX(double x) {
+		X = x;
 	}
 
 
@@ -103,11 +105,13 @@ public class Punto {
 		this.heigth = heigth;
 	}
 
-
+	
 	@Override
 	public String toString() {
-		return "" + index + "; " + date + "; " + time + "; " + latitude + "; " + longitude + "; " + heigth + "";
+		return "" + index + "; " + date + "; " + time + "; " + Y + "; " + X + "; " + heigth + "";
 	}
+	
+	
 	
 	
 	

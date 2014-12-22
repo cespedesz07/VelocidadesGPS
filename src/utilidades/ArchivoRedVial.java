@@ -104,21 +104,25 @@ public class ArchivoRedVial {
 		else{		
 			int idVia = 0;
 			String direccion = "";
-			double latitud1 = 0.0, longitud1 = 0.0, latitud2 = 0.0, longitud2 = 0.0; 
+			double x1 = 0.0, y1 = 0.0, x2 = 0.0, y2 = 0.0; 
 			//Luego de Tener los indices, se utilizan para consultar las columnas de interes
 			for ( int i=1; i<this.contenidoRedVial.size(); i++ ){
 				String[] fila = this.contenidoRedVial.get(i);
 				idVia = Integer.valueOf( fila[ indicesColumnas.get(0) ] );
 				direccion = fila[ indicesColumnas.get(1) ];
-				latitud1 = obtenerCoordenada( fila[ indicesColumnas.get(2) ] );
-				longitud1 = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );
-				latitud2 = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
-				longitud2 = obtenerCoordenada( fila[ indicesColumnas.get(5) ] );			
-				Arco arco = new Arco( idVia, direccion, latitud1, longitud1, latitud1, longitud1 );
+				x1 = obtenerCoordenada( fila[ indicesColumnas.get(2) ] );
+				y1 = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );	
+				x2 = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
+				y2 = obtenerCoordenada( fila[ indicesColumnas.get(5) ] );							
+				Arco arco = new Arco( idVia, direccion, x1, y1, x2, y2 );				
 				this.redVial.agregarArco(arco);				
 			}
+			this.contenidoRedVial = null;
+			System.gc();
 		}
 	}
+	
+	
 	
 	private Double obtenerCoordenada( String numero ){
 		if ( numero.contains( "," ) ){

@@ -48,18 +48,18 @@ public class RedVial {
 	public void ubicarPunto( Punto punto ){
 		for ( Arco arco : this.arregloArcos ){			
 			
-			if ( arco.getLatitud1() <= punto.getLatitude()  &&  punto.getLatitude() <= arco.getLatitud2()   &&   
-					arco.getLongitud1() <= punto.getLongitude()  &&  punto.getLongitude() <= arco.getLongitud1()	){
+			if ( arco.getX1() <= punto.getX()  &&  punto.getX() <= arco.getX2()   &&   
+					arco.getY1() <= punto.getY()  &&  punto.getY() <= arco.getY2()	){
 				arco.agregarPunto( punto );
-				System.out.println( "Punto Agregado: " + punto.toString() + " en Arco: " + arco.getIdVia() );
 			}
 		}
 	}
 	
 	
-	public void guardarArcosPuntos( File archivo ) throws FileNotFoundException{		
+	public void guardarArcosPuntos( File archivo ) throws FileNotFoundException{			
 		String temp = Arrays.toString( ArchivoRedVial.COLUMNAS_RED_VIAL ).replace(",", ";") + "; VEL_PROM; " + 
 				      Arrays.toString( ArchivoPuntosConcatenado.COLUMNAS_PUNTOS ).replace(",", ";") + "\n";
+		
 		for ( Arco arco : arregloArcos ){
 			for ( Punto punto : arco.getArregloPuntos() ){
 				temp += arco.toString() + "; " + punto.toString() + "\n";
@@ -77,10 +77,10 @@ public class RedVial {
 			if ( arco.getIdVia() == idVia ){
 				infoArco = "Id Via: \t" + arco.getIdVia() + 
 						"\nDireccion: \t" + arco.getDireccion() + 
-						"\nX1: \t" + arco.getLatitud1() +
-						"\nY1: \t" + arco.getLongitud1() +
-						"\nX2: \t" + arco.getLatitud2() +
-						"\nY2: \t" + arco.getLongitud2() +
+						"\nX1: \t" + arco.getX1() +
+						"\nY1: \t" + arco.getY1() +
+						"\nX2: \t" + arco.getX2() +
+						"\nY2: \t" + arco.getY2() +
 						"\nVel. Promedio: \t" + arco.getVelocidadPromedio();
 				return infoArco;
 			}
@@ -98,8 +98,8 @@ public class RedVial {
 						infoPunto = "Index: \t" + punto.getIndex() + 
 								"\nDate: \t" + punto.getDate() + 
 								"\nTime: \t" + punto.getTime() + 
-								"\nX: \t" + punto.getLongitude() + 
-								"\nY: \t" + punto.getLongitude() + 
+								"\nX: \t" + punto.getX() + 
+								"\nY: \t" + punto.getY() + 
 								"\nHeight: \t" + punto.getHeigth();
 					}
 				}
