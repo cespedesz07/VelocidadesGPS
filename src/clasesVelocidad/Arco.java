@@ -35,7 +35,8 @@ public class Arco {
 	}
 	
 	public double calcularVelocidadProm(){
-		return 0.0;
+		double velocidadPromedio = 0.0;
+		return velocidadPromedio;
 	}	
 	
 	public double getVelocidadPromedio() {
