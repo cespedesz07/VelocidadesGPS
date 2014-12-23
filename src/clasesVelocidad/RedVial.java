@@ -40,6 +40,7 @@ public class RedVial {
 	}
 	
 	
+	
 	/**
 	 * Método para Ubicar un punto en un arco 
 	 * de acuerdo a la latitud y longitud del punto respecto a las 
@@ -47,13 +48,35 @@ public class RedVial {
 	 */
 	public void ubicarPunto( Punto punto ){
 		for ( Arco arco : this.arregloArcos ){			
-			
-			if ( arco.getX1() <= punto.getX()  &&  punto.getX() <= arco.getX2()   &&   
-					arco.getY1() <= punto.getY()  &&  punto.getY() <= arco.getY2()	){
+			if (  pertenece( punto.getX(), arco.getX1(), arco.getX2() )  &&  
+				  pertenece( punto.getY(), arco.getY1(), arco.getY2() )  ){
 				arco.agregarPunto( punto );
 			}
 		}
+	}	
+	
+	
+	
+	public boolean pertenece( double coordRef, double coord1, double coord2 ){
+		if ( coord1 < coord2  ){
+			if ( coord1 <= coordRef  &&  coordRef <= coord2 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else if ( coord1 > coord2 ){
+			if ( coord2 <= coordRef  &&  coordRef <= coord1 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
 	}
+	
 	
 	
 	public void guardarArcosPuntos( File archivo ) throws FileNotFoundException{			
@@ -69,6 +92,14 @@ public class RedVial {
 		archivoArcoPuntos.write( temp );
 		archivoArcoPuntos.close();
 	}
+	
+	
+	public void calcularVelocidadesPromedio(){
+		for ( Arco arco : this.arregloArcos ){
+			arco.calcularVelocidadProm();
+		}
+	}
+	
 	
 	
 	public String getInfoArco( int idVia ){

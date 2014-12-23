@@ -1,5 +1,9 @@
 package clasesVelocidad;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Punto {
 	
 	
@@ -12,6 +16,7 @@ public class Punto {
 	private double Y;
 	private double X;
 	private int heigth;
+	private boolean recorrido;
 	//private int fid_2;
 	
 	
@@ -23,6 +28,7 @@ public class Punto {
 		this.Y = Y;
 		this.X = X;
 		this.heigth = heigth;
+		this.recorrido = false;
 		//this.fid_2 = fid_2;
 	}
 	
@@ -104,6 +110,61 @@ public class Punto {
 	public void setHeigth(int heigth) {
 		this.heigth = heigth;
 	}
+	
+	public boolean getRecorrido(){
+		return this.recorrido;
+	}
+	
+	
+	public void setRecorrido( boolean haSidoRecorrido ){
+		this.recorrido = haSidoRecorrido;
+	}
+	
+	
+	public double calcularDistancia( Punto sgtePunto ){
+		double distancia = -1.0;
+		double temp = Math.pow( sgtePunto.getY() - this.Y, 2 ) + Math.pow( sgtePunto.getX() - this.X, 2 );
+		distancia = Math.sqrt( temp );
+		return distancia;
+	}
+	
+	
+	public long calcularIntervaloSegundos( Punto puntoSgte ){
+		long intervaloSegundos = -1;
+		try {
+			SimpleDateFormat formatoHora = new SimpleDateFormat( "hhmmss" );
+			Date horaPuntoActual = formatoHora.parse( this.date );
+			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getDate() );
+			intervaloSegundos = ( horaPuntoSgte.getTime() - horaPuntoActual.getTime() ) / 1000;
+			return intervaloSegundos;
+			
+		} 
+		catch (ParseException e) {			
+			e.printStackTrace();
+		}
+		return intervaloSegundos;
+	}
+	
+	
+	
+	public boolean tieneHoraMenor( Punto puntoSgte ){
+		try{
+			SimpleDateFormat formatoHora = new SimpleDateFormat( "hhmmss" );
+			Date horaPuntoActual = formatoHora.parse( this.date );
+			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getDate() );
+			if ( horaPuntoActual.compareTo(horaPuntoSgte) < 0 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		catch ( ParseException error ){
+			error.printStackTrace();
+		}
+		return false;
+	}
+	
 
 	
 	@Override
