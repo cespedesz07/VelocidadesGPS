@@ -155,6 +155,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//unalman//Desktop//puntosGPS555.csv", null );
 						this.archivoPuntosGPS.cargarPuntosConcatenados();
 						this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
+						this.archivoRedVial.getRedVial().calcularVelocidadesPromedio();
 						this.iconoArchivoGPS.setIcon( ICONO_OK );
 						//this.lblNombreArchivoGps.setText( archivoPuntosGPS.getName() );
 						this.archivoGPSCargado = true;
@@ -180,7 +181,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 				Thread hilo = new Thread(){
 					public void run(){
 						try {
-							archivoRedVial.getRedVial().calcularVelocidadesPromedio();
+							//archivoRedVial.getRedVial().calcularVelocidadesPromedio();
 							archivoRedVial.getRedVial().guardarArcosPuntos(  new File("C://Users//unalman//Desktop//prueba555.csv")  );
 							JOptionPane.showMessageDialog( new JPanel(), "Archivo Arcos y Puntos generado exitosamente", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
 						}

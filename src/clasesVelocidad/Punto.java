@@ -133,8 +133,8 @@ public class Punto {
 		long intervaloSegundos = -1;
 		try {
 			SimpleDateFormat formatoHora = new SimpleDateFormat( "hhmmss" );
-			Date horaPuntoActual = formatoHora.parse( this.date );
-			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getDate() );
+			Date horaPuntoActual = formatoHora.parse( this.time );
+			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getTime() );
 			intervaloSegundos = ( horaPuntoSgte.getTime() - horaPuntoActual.getTime() ) / 1000;
 			return intervaloSegundos;
 			
@@ -150,9 +150,9 @@ public class Punto {
 	public boolean tieneHoraMenor( Punto puntoSgte ){
 		try{
 			SimpleDateFormat formatoHora = new SimpleDateFormat( "hhmmss" );
-			Date horaPuntoActual = formatoHora.parse( this.date );
-			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getDate() );
-			if ( horaPuntoActual.compareTo(horaPuntoSgte) < 0 ){
+			Date horaPuntoActual = formatoHora.parse( this.time );
+			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getTime() );
+			if ( horaPuntoActual.before(horaPuntoSgte) ){
 				return true;
 			}
 			else{
@@ -169,7 +169,7 @@ public class Punto {
 	
 	@Override
 	public String toString() {
-		return "" + index + "; " + date + "; " + time + "; " + Y + "; " + X + "; " + heigth + "";
+		return "" + index + "; " + date + "; " + time + "; " + Y + "; " + X + "; " + heigth + "; " + recorrido + "";
 	}
 	
 	

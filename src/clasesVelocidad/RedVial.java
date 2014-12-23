@@ -94,7 +94,7 @@ public class RedVial {
 	}
 	
 	
-	public void calcularVelocidadesPromedio(){
+	public void calcularVelocidadesPromedio() throws InterruptedException{
 		for ( Arco arco : this.arregloArcos ){
 			arco.calcularVelocidadProm();
 		}
