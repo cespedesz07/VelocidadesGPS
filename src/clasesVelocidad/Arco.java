@@ -72,11 +72,12 @@ public class Arco {
 			double numPuntosRuta = 0.0;
 			puntoInicio.setRecorrido( true );
 			for ( Punto puntoSgte : this.arregloPuntos ){
+				System.out.println( "        Posible punto: " + puntoSgte.toString() );
 				if ( !puntoSgte.getRecorrido() ){
 					if ( puntoInicio.getDate().equals( puntoSgte.getDate() ) ){		//Se verifica que los puntos sean de la misma fecha
 						if ( puntoInicio.tieneHoraMenor(puntoSgte) ){				//Se verifica que el punto actual tenga una hora Menor a la hora del punto
 							long diferenciaTiempo = puntoInicio.calcularIntervaloSegundos(puntoSgte);
-							if ( diferenciaTiempo < 10 ){
+							if ( diferenciaTiempo < 2 ){
 								velocidadOperacionRuta += ( 3.6 / diferenciaTiempo ) * puntoInicio.calcularDistancia(puntoSgte);
 								numPuntosRuta += 1;
 								puntoSgte.setRecorrido(true);
@@ -87,8 +88,8 @@ public class Arco {
 								puntoInicio = puntoSgte;								
 							}
 							else{
-								System.out.println( "Diferencia Tiempo Mayor a 10: " + diferenciaTiempo );
-								break;
+								System.out.println( "Diferencia Tiempo Mayor a 5: " + diferenciaTiempo );
+								//break;
 							}
 						}														 
 					}

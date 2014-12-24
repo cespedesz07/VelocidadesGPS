@@ -114,7 +114,7 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 						barraProgreso.setValue(0);
 						areaLog.setText( archivoConcatenado.getArchivosErroneos().toString() );
 						JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al concatenar archivo", JOptionPane.ERROR_MESSAGE );			
-						//error.printStackTrace();
+						error.printStackTrace();
 					}
 					
 				}

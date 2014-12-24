@@ -64,6 +64,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	 * @throws Exception
 	 */
 	public void generarArchivoConcatenado() throws Exception{
+		int indiceTime = -1;
 		File carpeta = new File( this.rutaCarpetaOrigen );			
 		if ( carpeta.exists() ){														//--Se verifica si la carpeta existe		
 			if ( carpeta.isDirectory() ){												//--Se verifica si la carpeta realmente es un folder
@@ -81,13 +82,22 @@ public class ArchivoPuntosConcatenado extends Thread{
 									
 							
 							Scanner entrada = new Scanner( archivoCSV );																											//Se verifica que el archivo .csv no esté vacio
-							if ( i != 0 ){															//Si el archivo a leer es diferente al primero de la lista...
-								//System.out.println( "Exceptuada: " + entrada.nextLine() );			//...se hace caso omiso a la lectura de la primer linea (la cabecera)
-								entrada.nextLine();
-							}							
+							if ( i == 0 ){															//Si el archivo a leer es diferente al primero de la lista...
+								String primeraLinea = entrada.nextLine();
+								indiceTime = buscarIndice( COLUMNAS_PUNTOS[2], primeraLinea.split(",") );
+								this.contenidoTemp += primeraLinea.replace(",", ";");
+							}
+							else{
+								entrada.nextLine();														//...se hace caso omiso a la lectura de la primer linea (la cabecera)
+							}
+							
 							while ( entrada.hasNext() ){								
-								String linea = entrada.nextLine(); 
-								System.out.println( linea );
+								String linea = entrada.nextLine(); 								
+								//System.out.println( linea );
+								String[] lineaPartida = linea.split( "," );
+								lineaPartida[ indiceTime ] = String.format( "=\"%s\"", lineaPartida[ indiceTime ] );
+								linea = Arrays.toString( lineaPartida ).replace(", ", ";");
+								linea = linea.replace("[", "").replace("]", "");
 								this.contenidoTemp += linea + "\n";
 							}
 							
@@ -124,6 +134,16 @@ public class ArchivoPuntosConcatenado extends Thread{
 		}		
 	}
 	
+	
+	
+	public int buscarIndice( String columna, String[] arreglo ){
+		for ( int i=0; i<arreglo.length; i++ ){
+			if ( arreglo[i].equals( columna ) ){
+				return i;
+			}
+		}
+		return -1;
+	}
 	
 	
 	
