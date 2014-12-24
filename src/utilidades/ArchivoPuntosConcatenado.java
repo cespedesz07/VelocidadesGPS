@@ -248,7 +248,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 				String[] fila = this.contenidoPuntos.get(i);				
 				long index = Long.parseLong( fila[ indicesColumnas.get(0) ].trim() );
 				String fecha = fila[ indicesColumnas.get(1) ];
-				String hora = fila[ indicesColumnas.get(2) ];
+				String hora = String.format( "%06d", Integer.valueOf(fila[ indicesColumnas.get(2) ]) );
 				double x = obtenerCoordenada( fila[ indicesColumnas.get(3) ] );
 				double y = obtenerCoordenada( fila[ indicesColumnas.get(4) ] );
 				int altitud = Integer.valueOf( fila[ indicesColumnas.get(5) ] );

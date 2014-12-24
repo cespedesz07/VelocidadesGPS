@@ -39,80 +39,86 @@ public class Arco {
 	
 	
 	public void calcularVelocidadProm() throws InterruptedException{
+		System.out.println( "====================== ARCO " + this.getIdVia() + " =====================" );
+		System.out.println( "Puntos: " + Arrays.toString( this.arregloPuntos.toArray() ) );
 		double velocidadPromedio = 0.0;
 		
-		ArrayList<Double> velocidadesRutas = new ArrayList<Double>();
-		int totalPuntosContados = 0;
-		
-		while ( totalPuntosContados < this.arregloPuntos.size() ){
+		if ( this.arregloPuntos.size() != 0 ){
+			ArrayList<Double> velocidadesRutas = new ArrayList<Double>();
+			int totalPuntosContados = 0;
 			
-			//Primero se busca el punto mas cercano al punto inicial (X1, Y1) del arco
-			Punto puntoInicialMasCercano = buscarPuntoMasCercano( this.X1, this.Y1, null );
-			
-			//Segundo paso es encontrar el punto mas cercano al punto final (X2, Y2) del arco
-			//CON LA MISMA FECHA DEL PUNTO INICIAL (anteriormente encontrado)
-			Punto puntoFinalMasCercano = buscarPuntoMasCercano( this.X2, this.Y2, puntoInicialMasCercano.getDate() );			
-			
-			//Tercer paso es comparar los tiempos de ambos puntos para determinar la direccion de la ruta
-			Punto puntoInicio = null;
-			if ( puntoInicialMasCercano.tieneHoraMenor( puntoFinalMasCercano ) ){
-				puntoInicio = puntoInicialMasCercano;
-			}
-			else{
-				puntoInicio = puntoFinalMasCercano;
-			}
-			
-			
-			System.out.println( "-----------INICIO RUTA--------------------------- \n" );
-			
-			
-			//Finalmente se recorren los puntos de la ruta (con igual fecha y tiempo consecutivo) siguiendo la direccion determinada de la ruta
-			//y comenzando por el puntoInicio
-			double velocidadOperacionRuta = 0.0;
-			double numPuntosRuta = 0.0;
-			puntoInicio.setRecorrido( true );
-			for ( Punto puntoSgte : this.arregloPuntos ){
-				System.out.println( "        Posible punto: " + puntoSgte.toString() );
-				if ( !puntoSgte.getRecorrido() ){
-					if ( puntoInicio.getDate().equals( puntoSgte.getDate() ) ){		//Se verifica que los puntos sean de la misma fecha
-						if ( puntoInicio.tieneHoraMenor(puntoSgte) ){				//Se verifica que el punto actual tenga una hora Menor a la hora del punto
-							long diferenciaTiempo = puntoInicio.calcularIntervaloSegundos(puntoSgte);
-							if ( diferenciaTiempo < 2 ){
-								velocidadOperacionRuta += ( 3.6 / diferenciaTiempo ) * puntoInicio.calcularDistancia(puntoSgte);
-								numPuntosRuta += 1;
-								puntoSgte.setRecorrido(true);
-								System.out.println( "    Punto Inicial: \t" + puntoInicio.toString() );
-								System.out.println( "    Punto Sgte: \t" + puntoSgte.toString() );
-								System.out.println( "    Velocidad Operacion Ruta: " + velocidadOperacionRuta );
-								System.out.println( "    Intervalo de Segundos: " + diferenciaTiempo + "\n" );
-								puntoInicio = puntoSgte;								
-							}
-							else{
-								System.out.println( "Diferencia Tiempo Mayor a 5: " + diferenciaTiempo );
-								//break;
-							}
-						}														 
+			while ( totalPuntosContados < this.arregloPuntos.size() ){
+				
+				//Primero se busca el punto mas cercano al punto inicial (X1, Y1) del arco
+				Punto puntoInicialMasCercano = buscarPuntoMasCercano( this.X1, this.Y1, null );
+				
+				//Segundo paso es encontrar el punto mas cercano al punto final (X2, Y2) del arco
+				//CON LA MISMA FECHA DEL PUNTO INICIAL (anteriormente encontrado)
+				Punto puntoFinalMasCercano = buscarPuntoMasCercano( this.X2, this.Y2, puntoInicialMasCercano.getDate() );			
+				
+				//Tercer paso es comparar los tiempos de ambos puntos para determinar la direccion de la ruta
+				Punto puntoInicio = null;
+				if ( puntoInicialMasCercano.tieneHoraMenor( puntoFinalMasCercano ) ){
+					puntoInicio = puntoInicialMasCercano;
+				}
+				else{
+					puntoInicio = puntoFinalMasCercano;
+				}
+				
+				
+				//System.out.println( "-----------INICIO RUTA--------------------------- \n" );
+				
+				
+				//Finalmente se recorren los puntos de la ruta (con igual fecha y tiempo consecutivo) siguiendo la direccion determinada de la ruta
+				//y comenzando por el puntoInicio
+				double velocidadOperacionRuta = 0.0;
+				double numPuntosRuta = 0.0;
+				puntoInicio.setRecorrido( true );
+				for ( Punto puntoSgte : this.arregloPuntos ){
+					//System.out.println( "        Posible punto: " + puntoSgte.toString() );
+					if ( !puntoSgte.getRecorrido() ){
+						if ( puntoInicio.getDate().equals( puntoSgte.getDate() ) ){		//Se verifica que los puntos sean de la misma fecha
+							if ( puntoInicio.tieneHoraMenor(puntoSgte) ){				//Se verifica que el punto actual tenga una hora Menor a la hora del punto
+								long diferenciaTiempo = puntoInicio.calcularIntervaloSegundos(puntoSgte);
+								if ( diferenciaTiempo < 2 ){
+									velocidadOperacionRuta += ( 3.6 / diferenciaTiempo ) * puntoInicio.calcularDistancia(puntoSgte);
+									numPuntosRuta += 1;
+									puntoSgte.setRecorrido(true);
+									//System.out.println( "    Punto Inicial: \t" + puntoInicio.toString() );
+									//System.out.println( "    Punto Sgte: \t" + puntoSgte.toString() );
+									//System.out.println( "    Velocidad Operacion Ruta: " + velocidadOperacionRuta );
+									//System.out.println( "    Intervalo de Segundos: " + diferenciaTiempo + "\n" );
+									puntoInicio = puntoSgte;								
+								}
+								else{
+									//System.out.println( "Diferencia Tiempo Mayor a 5: " + diferenciaTiempo );
+									break;
+								}
+							}														 
+						}
 					}
 				}
-			}
+				
+				velocidadOperacionRuta = velocidadOperacionRuta / ( numPuntosRuta + 1 );
+				velocidadesRutas.add( velocidadOperacionRuta );
+				//System.out.println( "Velocidades de Cada Ruta: " + Arrays.toString( velocidadesRutas.toArray() ) );
+				totalPuntosContados += (numPuntosRuta + 1);
+				//System.out.println( "-----------FINALIZA RUTA--------------------------- \n" );
+				//System.out.println( "Total Puntos Contados: " + totalPuntosContados );
+				//System.out.println( "--------------------------------------------------- \n\n" );
+				//Thread.sleep( 1000 );
+			}	//Se repide esto para cada ruta en el arco
 			
-			velocidadOperacionRuta = velocidadOperacionRuta / ( numPuntosRuta + 1 );
-			velocidadesRutas.add( velocidadOperacionRuta );
-			System.out.println( "Velocidades de Cada Ruta: " + Arrays.toString( velocidadesRutas.toArray() ) );
-			totalPuntosContados += (numPuntosRuta + 1);
-			System.out.println( "-----------FINALIZA RUTA--------------------------- \n" );
-			System.out.println( "Total Puntos Contados: " + totalPuntosContados );
-			System.out.println( "--------------------------------------------------- \n\n" );
-			Thread.sleep( 1000 );
-		}	//Se repide esto para cada ruta en el arco
-		
-		
-		for ( Double velocidadRuta : velocidadesRutas ){
-			this.velocidadPromedio += velocidadRuta;
+			
+			for ( Double velocidadRuta : velocidadesRutas ){
+				this.velocidadPromedio += velocidadRuta;
+			}
+			this.velocidadPromedio = this.velocidadPromedio / velocidadesRutas.size();
 		}
-		this.velocidadPromedio = this.velocidadPromedio / velocidadesRutas.size();	
-		
-		System.out.println( "..........VELOCIDAD PROMEDIO DEL ARCO: " + this.velocidadPromedio );
+		else{
+			
+		}
+		System.out.println( "..........VELOCIDAD PROMEDIO DEL ARCO " + this.idVia + ": " + this.velocidadPromedio + " ........\n" );
 	}	
 	
 	
@@ -208,7 +214,7 @@ public class Arco {
 	
 	@Override
 	public String toString() {
-		return idVia + "; " + direccion	+ "; " + X1 + "; " + Y1 + "; " + X2 + "; " + Y2 + "; " + velocidadPromedio + "";
+		return idVia + "; " + direccion	+ "; " + String.valueOf(X1).replace(".", ",") + "; " + String.valueOf(Y1).replace(".", ",") + "; " + String.valueOf(X2).replace(".", ",") + "; " + String.valueOf(Y2).replace(".", ",") + "; " + String.valueOf(velocidadPromedio).replace(".", ",") + "";
 	}
 	
 	

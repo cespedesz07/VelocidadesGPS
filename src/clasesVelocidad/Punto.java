@@ -148,7 +148,7 @@ public class Punto {
 	
 	
 	public boolean tieneHoraMenor( Punto puntoSgte ){
-		try{
+		try{			
 			SimpleDateFormat formatoHora = new SimpleDateFormat( "hhmmss" );
 			Date horaPuntoActual = formatoHora.parse( this.time );
 			Date horaPuntoSgte = formatoHora.parse( puntoSgte.getTime() );
