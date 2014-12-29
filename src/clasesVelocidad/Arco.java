@@ -13,7 +13,7 @@ public class Arco {
 	
 	
 	// Atributos
-	private int idVia;
+	private int no;
 	private String direccion;
 	private double X1;					//Longitud1
 	private double Y1;					//Latitud1
@@ -25,8 +25,8 @@ public class Arco {
 	
 
 	//Métodos
-	public Arco( int idVia, String direccion, double X1, double Y1, double X2, double Y2 ){
-		this.idVia = idVia;
+	public Arco( int no, String direccion, double X1, double Y1, double X2, double Y2 ){
+		this.no = no;
 		this.direccion = direccion;
 		this.X1 = X1;
 		this.Y1 = Y1;
@@ -38,19 +38,25 @@ public class Arco {
 	
 	
 	
-	public void calcularVelocidadProm() throws InterruptedException{
-		System.out.println( "====================== ARCO " + this.getIdVia() + " =====================" );
-		System.out.println( "Puntos: " + Arrays.toString( this.arregloPuntos.toArray() ) );
+	public void calcularVelocidadProm(){
+		System.out.println( "====================== ARCO " + this.no + " =====================" );
+		//System.out.println( "Puntos: " + Arrays.toString( this.arregloPuntos.toArray() ) );
 		double velocidadPromedio = 0.0;
 		
 		if ( this.arregloPuntos.size() != 0 ){
 			ArrayList<Double> velocidadesRutas = new ArrayList<Double>();
 			int totalPuntosContados = 0;
 			
-			while ( totalPuntosContados < this.arregloPuntos.size() ){
+			while ( totalPuntosContados < this.arregloPuntos.size() ){			
+				
 				
 				//Primero se busca el punto mas cercano al punto inicial (X1, Y1) del arco
 				Punto puntoInicialMasCercano = buscarPuntoMasCercano( this.X1, this.Y1, null );
+				
+				if ( puntoInicialMasCercano == null ){
+					this.velocidadPromedio = velocidadPromedio;
+					break;
+				}
 				
 				//Segundo paso es encontrar el punto mas cercano al punto final (X2, Y2) del arco
 				//CON LA MISMA FECHA DEL PUNTO INICIAL (anteriormente encontrado)
@@ -118,7 +124,7 @@ public class Arco {
 		else{
 			
 		}
-		System.out.println( "..........VELOCIDAD PROMEDIO DEL ARCO " + this.idVia + ": " + this.velocidadPromedio + " ........\n" );
+		System.out.println( "..........VELOCIDAD PROMEDIO DEL ARCO " + this.no + ": " + this.velocidadPromedio + " ........\n" );
 	}	
 	
 	
@@ -155,12 +161,12 @@ public class Arco {
 		return velocidadPromedio;
 	}		
 
-	public int getIdVia() {
-		return idVia;
+	public int getNo() {
+		return no;
 	}
 
-	public void setIdVia(int idVia) {
-		this.idVia = idVia;
+	public void setNo(int no) {
+		this.no = no;
 	}	
 
 	public String getDireccion() {
@@ -214,7 +220,7 @@ public class Arco {
 	
 	@Override
 	public String toString() {
-		return idVia + "; " + direccion	+ "; " + String.valueOf(X1).replace(".", ",") + "; " + String.valueOf(Y1).replace(".", ",") + "; " + String.valueOf(X2).replace(".", ",") + "; " + String.valueOf(Y2).replace(".", ",") + "; " + String.valueOf(velocidadPromedio).replace(".", ",") + "";
+		return no + "; " + direccion	+ "; " + String.valueOf(X1).replace(".", ",") + "; " + String.valueOf(Y1).replace(".", ",") + "; " + String.valueOf(X2).replace(".", ",") + "; " + String.valueOf(Y2).replace(".", ",") + "; " + String.valueOf(velocidadPromedio).replace(".", ",") + "";
 	}
 	
 	

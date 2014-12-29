@@ -48,6 +48,8 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 	private boolean redVialCargada;
 	private boolean archivoGPSCargado;
 	
+	private JFileChooser selectorPuntosGPS;
+	
 
 	/**
 	 * Create the panel.
@@ -123,8 +125,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 				try{
 					//File redVialCargada = this.selectorRedVial.getSelectedFile();
 					//this.archivoRedVial = new ArchivoRedVial( redVialCargada.getAbsolutePath() );
-					//this.archivoRedVial = new ArchivoRedVial( "C://Users//unalman//Desktop//redVial555.csv" );
-					this.archivoRedVial = new ArchivoRedVial( "C://Users//unalman//Desktop//Red_vial_visum_link.csv" );
+					this.archivoRedVial = new ArchivoRedVial( "C://Users//unalman//Desktop//Red_vial_visum_link_FINAL_KATE.csv" );
 					this.archivoRedVial.cargarRedVial();
 					this.archivoRedVial.inicializarArcos();
 					this.iconoRedVial.setIcon( ICONO_OK );
@@ -151,8 +152,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 					try{
 						//File archivoPuntosGPS = this.selectorPuntosGPS.getSelectedFile();
 						//this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, archivoPuntosGPS.getAbsolutePath(), null );
-						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//unalman//Desktop//Export_Output.csv", null );
-						//this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//unalman//Desktop//puntosGPS555.csv", null );
+						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//unalman//Desktop//concatenado_CARRO.csv", null );
 						this.archivoPuntosGPS.cargarPuntosConcatenados();
 						this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
 						this.archivoRedVial.getRedVial().calcularVelocidadesPromedio();

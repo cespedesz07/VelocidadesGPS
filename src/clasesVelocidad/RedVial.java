@@ -80,13 +80,16 @@ public class RedVial {
 	
 	
 	public void guardarArcosPuntos( File archivo ) throws FileNotFoundException{			
+		/*
 		String temp = Arrays.toString( ArchivoRedVial.COLUMNAS_RED_VIAL ).replace(",", ";") + "; VEL_PROM; " + 
 				      Arrays.toString( ArchivoPuntosConcatenado.COLUMNAS_PUNTOS ).replace(",", ";") + "\n";
-		
+		*/
+		String temp = Arrays.toString( ArchivoRedVial.COLUMNAS_RED_VIAL ).replace(",", ";") + "; VEL_PROM\n";
 		for ( Arco arco : arregloArcos ){
-			for ( Punto punto : arco.getArregloPuntos() ){
-				temp += arco.toString() + "; " + punto.toString() + "\n";
-			}
+			//for ( Punto punto : arco.getArregloPuntos() ){
+				//temp += arco.toString() + "; " + punto.toString() + "\n";
+			//}
+			temp += arco.toString() + "\n";
 		}
 		PrintWriter archivoArcoPuntos = new PrintWriter( archivo );		
 		archivoArcoPuntos.write( temp );
@@ -94,7 +97,7 @@ public class RedVial {
 	}
 	
 	
-	public void calcularVelocidadesPromedio() throws InterruptedException{
+	public void calcularVelocidadesPromedio(){
 		for ( Arco arco : this.arregloArcos ){
 			arco.calcularVelocidadProm();
 		}
@@ -102,11 +105,11 @@ public class RedVial {
 	
 	
 	
-	public String getInfoArco( int idVia ){
+	public String getInfoArco( int no ){
 		String infoArco = ""; 
 		for ( Arco arco : arregloArcos ){
-			if ( arco.getIdVia() == idVia ){
-				infoArco = "Id Via: \t" + arco.getIdVia() + 
+			if ( arco.getNo() == no ){
+				infoArco = "No: \t" + arco.getNo() + 
 						"\nDireccion: \t" + arco.getDireccion() + 
 						"\nX1: \t" + arco.getX1() +
 						"\nY1: \t" + arco.getY1() +
@@ -120,10 +123,10 @@ public class RedVial {
 	}
 	
 	
-	public String getInfoPunto( int idVia, int indexPunto ){
+	public String getInfoPunto( int no, int indexPunto ){
 		String infoPunto = "";
 		for ( Arco arco : arregloArcos ){
-			if ( arco.getIdVia() == idVia ){
+			if ( arco.getNo() == no ){
 				for ( Punto punto : arco.getArregloPuntos() ){
 					if ( punto.getIndex() == indexPunto ){
 						infoPunto = "Index: \t" + punto.getIndex() + 

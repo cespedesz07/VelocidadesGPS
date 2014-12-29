@@ -68,7 +68,7 @@ public class PanelArbolArcosPuntos extends JPanel implements TreeSelectionListen
 		
 		for ( int i=0; i<redVial.getArregloArcos().size(); i++ ){
 			Arco arco = redVial.getArregloArcos().get( i );			
-			DefaultMutableTreeNode nodoArco = new DefaultMutableTreeNode( LABEL_ARCO + " " + arco.getIdVia() );
+			DefaultMutableTreeNode nodoArco = new DefaultMutableTreeNode( LABEL_ARCO + " " + arco.getNo() );
 			nodoArco.setAllowsChildren( true );			
 			raiz.add( nodoArco );
 			
