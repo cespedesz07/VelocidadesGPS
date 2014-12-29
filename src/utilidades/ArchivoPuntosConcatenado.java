@@ -85,7 +85,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 							if ( i == 0 ){															//Si el archivo a leer es diferente al primero de la lista...
 								String primeraLinea = entrada.nextLine();
 								indiceTime = buscarIndice( COLUMNAS_PUNTOS[2], primeraLinea.split(",") );
-								this.contenidoTemp += primeraLinea.replace(",", ";");
+								this.contenidoTemp += primeraLinea.replace(",", ";") + "\n";
 							}
 							else{
 								entrada.nextLine();														//...se hace caso omiso a la lectura de la primer linea (la cabecera)
