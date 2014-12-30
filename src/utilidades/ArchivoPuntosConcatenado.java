@@ -108,8 +108,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 								this.panelConcatenadoPuntos.setProgreso( (int)progreso );
 							}
 							this.panelConcatenadoPuntos.setPosicionAreaLog( this.contenidoTemp.length() );
-						}
-						System.out.println( this.contenidoTemp );
+						}						
 					}
 					else{
 						throw new Exception( "La carpeta contiene archivos que no son .csv o Contiene archivos vacios "
