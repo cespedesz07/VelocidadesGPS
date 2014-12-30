@@ -78,8 +78,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 						double total = obtenerTamañoTotal( listaArchivosCSV );   //Retorna el total de lineas de cada archivo CSV
 						int contadorLinea = 0;
 						for ( int i=0; i<listaArchivosCSV.length; i++ ){					
-							File archivoCSV = listaArchivosCSV[i];
-							System.out.println(  );							
+							File archivoCSV = listaArchivosCSV[i];						
 							this.panelConcatenadoPuntos.setAreaLog( this.panelConcatenadoPuntos.getAreaLog() + 
 									String.format( "%d - Leyendo: %s \n", i+1, archivoCSV.getName() ) );
 									
@@ -88,7 +87,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 							if ( i == 0 ){															//Si el archivo a leer es diferente al primero de la lista...
 								String primeraLinea = entrada.nextLine();
 								indiceTime = buscarIndice( COLUMNAS_PUNTOS[2], primeraLinea.split(",") );
-								this.contenidoTemp += primeraLinea.replace(",", ";").trim() + "\n";
+								this.contenidoTemp += primeraLinea.replace(",", ";") + "\n";
 							}
 							else{
 								entrada.nextLine();														//...se hace caso omiso a la lectura de la primer linea (la cabecera)
@@ -103,16 +102,13 @@ public class ArchivoPuntosConcatenado extends Thread{
 								linea = Arrays.toString( lineaPartida ).replace(", ", ";");
 								linea = linea.replace("[", "").replace("]", "");
 								this.contenidoTemp += linea + "\n";
-								double progreso = ( ((double)contadorLinea ) / total ) * 100;	
-								//System.out.println( contadorLinea + ", " + contadorLinea * TAMAÑO_LINEA_CSV + ", " + total );
+								
+								double progreso = ( ((double)contadorLinea ) / total ) * 100;									
 								this.panelConcatenadoPuntos.setProgreso( (int)progreso );
 							}
-							/*
-							double progreso = ( (double)(i+1) / (double)listaArchivosCSV.length ) * 100;							
-							this.panelConcatenadoPuntos.setProgreso( (int)progreso );
-							*/
 							this.panelConcatenadoPuntos.setPosicionAreaLog( this.contenidoTemp.length() );
 						}
+						System.out.println( this.contenidoTemp );
 					}
 					else{
 						throw new Exception( "La carpeta contiene archivos que no son .csv o Contiene archivos vacios "
