@@ -21,8 +21,13 @@ import java.awt.Font;
 import java.awt.TextArea;
 
 import javax.swing.JProgressBar;
+import javax.swing.JComboBox;
 
 public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
+	
+		
+	public static final String[] ITEMS_DELIM = { "1. Punto y Coma (;)", "2. Coma (,)" };
+	public static final String[] DELIMS = { ";", "," };
 	
 	
 	private JFileChooser selectorCarpeta;	
@@ -31,6 +36,7 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 	private JButton btnBuscar;
 	private TextArea areaLog;
 	private ArchivoPuntosConcatenado archivoConcatenado;
+	private JComboBox listaDelimitador;
 
 	/**
 	 * Create the panel.
@@ -46,25 +52,33 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener( this );
-		btnBuscar.setBounds(304, 19, 89, 23);
+		btnBuscar.setBounds(261, 19, 120, 23);
 		add(btnBuscar);
 		
 		areaLog = new TextArea();
 		areaLog.setEditable( false );
 		areaLog.setFont( new Font( "Consolas", Font.PLAIN, 12 ) );
-		areaLog.setBounds(42, 90, 422, 160);
+		areaLog.setBounds(42, 105, 422, 160);
 		add(areaLog);
 		
 	
 		barraProgreso = new JProgressBar();
 		barraProgreso.setStringPainted( true );
-		barraProgreso.setBounds(318, 70, 146, 14);
+		barraProgreso.setBounds(318, 85, 146, 14);
 		add(barraProgreso);		
 		
 		
 		JLabel lblLog = new JLabel("Log:");
-		lblLog.setBounds(28, 70, 46, 14);
+		lblLog.setBounds(30, 85, 46, 14);
 		add(lblLog);
+		
+		JLabel lblDelimitadorDeColumnas = new JLabel("Delimitador de Columnas:");
+		lblDelimitadorDeColumnas.setBounds(42, 60, 128, 14);
+		add(lblDelimitadorDeColumnas);
+		
+		listaDelimitador = new JComboBox( ITEMS_DELIM );
+		listaDelimitador.setBounds(261, 57, 120, 20);
+		add(listaDelimitador);
 	}
 	
 	public void setPosicionAreaLog( int posicion ){
@@ -86,6 +100,10 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 		barraProgreso.setValue( valor );	
 	}
 	
+	public String getDelimSeleccionado(){
+		return DELIMS[ this.listaDelimitador.getSelectedIndex() ];
+	}
+	
 	
 	@Override
 	public void actionPerformed( ActionEvent evento ){
@@ -104,12 +122,14 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 						areaLog.setText( fechaHoraInicio.toString() );
 						areaLog.setText( areaLog.getText() + "\n\nConcatenando... \n" );				
 						archivoConcatenado.generarArchivoConcatenado();	
-						btnBuscar.setEnabled(false);
+						btnBuscar.setEnabled( false );
+						listaDelimitador.setEnabled( false );
 						Date fechaHoraFin = new java.util.Date();
 						areaLog.setText( areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );
 						barraProgreso.setValue( 100 );
 						JOptionPane.showMessageDialog(new JPanel(), "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
-						btnBuscar.setEnabled(true);							
+						btnBuscar.setEnabled(true);	
+						listaDelimitador.setEnabled( true );
 					}
 					catch ( Exception error ){
 						barraProgreso.setValue(0);
@@ -123,7 +143,4 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 			hilo.start();
 		}//Cierre If
 	}
-	
-	
-	
 }

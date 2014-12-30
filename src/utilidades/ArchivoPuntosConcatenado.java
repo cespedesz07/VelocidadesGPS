@@ -66,6 +66,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 	 */
 	public void generarArchivoConcatenado() throws Exception{
 		int indiceTime = -1;
+		String delimSeleccionado = this.panelConcatenadoPuntos.getDelimSeleccionado();
 		File carpeta = new File( this.rutaCarpetaOrigen );			
 		if ( carpeta.exists() ){														//--Se verifica si la carpeta existe		
 			if ( carpeta.isDirectory() ){												//--Se verifica si la carpeta realmente es un folder
@@ -87,7 +88,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 							if ( i == 0 ){															//Si el archivo a leer es diferente al primero de la lista...
 								String primeraLinea = entrada.nextLine();
 								indiceTime = buscarIndice( COLUMNAS_PUNTOS[2], primeraLinea.split(",") );
-								this.contenidoTemp += primeraLinea.replace(",", ";") + "\n";
+								this.contenidoTemp += primeraLinea.replace(",", delimSeleccionado) + "\n";
 							}
 							else{
 								entrada.nextLine();														//...se hace caso omiso a la lectura de la primer linea (la cabecera)
@@ -99,7 +100,7 @@ public class ArchivoPuntosConcatenado extends Thread{
 								contadorLinea += 1;
 								String[] lineaPartida = linea.split( "," );
 								lineaPartida[ indiceTime ] = String.format( "=\"%s\"", lineaPartida[ indiceTime ] );
-								linea = Arrays.toString( lineaPartida ).replace(", ", ";");
+								linea = Arrays.toString( lineaPartida ).replace(", ", delimSeleccionado);
 								linea = linea.replace("[", "").replace("]", "");
 								this.contenidoTemp += linea + "\n";
 								

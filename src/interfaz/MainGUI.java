@@ -19,6 +19,7 @@ public class MainGUI extends JFrame implements WindowListener {
 		setSize( 500, 620 );
 		setTitle( "Pantalla Inicial" );	
 		setDefaultCloseOperation( EXIT_ON_CLOSE );
+		setResizable( false );
 		getContentPane().setLayout( new GridLayout(2,1)  );
 		addWindowListener( this );
 		
