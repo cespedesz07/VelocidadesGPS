@@ -107,6 +107,7 @@ public class PanelConcatenadoPuntos extends JPanel implements ActionListener {
 						btnBuscar.setEnabled(false);
 						Date fechaHoraFin = new java.util.Date();
 						areaLog.setText( areaLog.getText() + "\n" + fechaHoraFin.toString() + "\n" );
+						barraProgreso.setValue( 100 );
 						JOptionPane.showMessageDialog(new JPanel(), "Archivo Concatenado Exitosamente", "Exito!", JOptionPane.INFORMATION_MESSAGE );
 						btnBuscar.setEnabled(true);							
 					}

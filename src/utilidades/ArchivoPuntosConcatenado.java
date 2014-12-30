@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import clasesVelocidad.Punto;
@@ -74,9 +75,11 @@ public class ArchivoPuntosConcatenado extends Thread{
 					if ( archivosErroneos.isEmpty() ){												
 					
 						//Se realiza la lectura linea x linea de cada archivo CSV
+						double total = obtenerTamañoTotal( listaArchivosCSV );   //Retorna el total de lineas de cada archivo CSV
+						int contadorLinea = 0;
 						for ( int i=0; i<listaArchivosCSV.length; i++ ){					
 							File archivoCSV = listaArchivosCSV[i];
-							//System.out.printf( "%d Leyendo: %s \n", i, archivoCSV.getName() );
+							System.out.println(  );							
 							this.panelConcatenadoPuntos.setAreaLog( this.panelConcatenadoPuntos.getAreaLog() + 
 									String.format( "%d - Leyendo: %s \n", i+1, archivoCSV.getName() ) );
 									
@@ -85,25 +88,29 @@ public class ArchivoPuntosConcatenado extends Thread{
 							if ( i == 0 ){															//Si el archivo a leer es diferente al primero de la lista...
 								String primeraLinea = entrada.nextLine();
 								indiceTime = buscarIndice( COLUMNAS_PUNTOS[2], primeraLinea.split(",") );
-								this.contenidoTemp += primeraLinea.replace(",", ";") + "\n";
+								this.contenidoTemp += primeraLinea.replace(",", ";").trim() + "\n";
 							}
 							else{
 								entrada.nextLine();														//...se hace caso omiso a la lectura de la primer linea (la cabecera)
 							}
 							
+													
 							while ( entrada.hasNext() ){								
-								String linea = entrada.nextLine(); 								
-								//System.out.println( linea );
+								String linea = entrada.nextLine();
+								contadorLinea += 1;
 								String[] lineaPartida = linea.split( "," );
 								lineaPartida[ indiceTime ] = String.format( "=\"%s\"", lineaPartida[ indiceTime ] );
 								linea = Arrays.toString( lineaPartida ).replace(", ", ";");
 								linea = linea.replace("[", "").replace("]", "");
 								this.contenidoTemp += linea + "\n";
+								double progreso = ( ((double)contadorLinea ) / total ) * 100;	
+								//System.out.println( contadorLinea + ", " + contadorLinea * TAMAÑO_LINEA_CSV + ", " + total );
+								this.panelConcatenadoPuntos.setProgreso( (int)progreso );
 							}
-							
-							double progreso = ( (double)(i+1) / (double)listaArchivosCSV.length ) * 100;
-							//System.out.println( (int)progreso + ", " + progreso + ", " + (i+1) + ", " + listaArchivosCSV.length );							
+							/*
+							double progreso = ( (double)(i+1) / (double)listaArchivosCSV.length ) * 100;							
 							this.panelConcatenadoPuntos.setProgreso( (int)progreso );
+							*/
 							this.panelConcatenadoPuntos.setPosicionAreaLog( this.contenidoTemp.length() );
 						}
 					}
@@ -132,6 +139,26 @@ public class ArchivoPuntosConcatenado extends Thread{
 		else{
 			throw new Exception ( "No existe el archivo/ruta seleccionada." );
 		}		
+	}
+	
+	
+	/**
+	 * Método para obtener el numero de lineas totales de cada archivo CSV. 
+	 * Ideal para ajustar la barra de progreso. 
+	 * @param listaArchivos
+	 * @return
+	 */
+	private int obtenerTamañoTotal( File[] listaArchivos ){
+		int total = 0;
+		for ( File archivo : listaArchivos ){
+			try{
+				total += new Scanner( archivo ).useDelimiter("\\A").next().split("\n").length;
+			}
+			catch ( Exception error ){
+				error.printStackTrace();
+			}
+		}
+		return total;
 	}
 	
 	

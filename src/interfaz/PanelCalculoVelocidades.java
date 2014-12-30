@@ -48,6 +48,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 	private boolean redVialCargada;
 	private boolean archivoGPSCargado;
 	
+	private JFileChooser selectorRedVial;
 	private JFileChooser selectorPuntosGPS;
 	
 
@@ -118,18 +119,17 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 	public void actionPerformed( ActionEvent evento) {
 		String boton = evento.getActionCommand();
 		if ( boton.equals( BUSCAR_RED_VIAL ) ){
-			//this.selectorRedVial = new JFileChooser();
-			//this.selectorRedVial.setFileSelectionMode( JFileChooser.FILES_ONLY );
-			//int opcion = this.selectorRedVial.showOpenDialog(this);
-			//if ( opcion == JFileChooser.APPROVE_OPTION ){
+			this.selectorRedVial = new JFileChooser();
+			this.selectorRedVial.setFileSelectionMode( JFileChooser.FILES_ONLY );
+			int opcion = this.selectorRedVial.showOpenDialog(this);
+			if ( opcion == JFileChooser.APPROVE_OPTION ){
 				try{
-					//File redVialCargada = this.selectorRedVial.getSelectedFile();
-					//this.archivoRedVial = new ArchivoRedVial( redVialCargada.getAbsolutePath() );
-					this.archivoRedVial = new ArchivoRedVial( "C://Users//unalman//Desktop//Red_vial_visum_link_FINAL_KATE.csv" );
+					File redVialCargada = this.selectorRedVial.getSelectedFile();
+					this.archivoRedVial = new ArchivoRedVial( redVialCargada.getAbsolutePath() );
 					this.archivoRedVial.cargarRedVial();
 					this.archivoRedVial.inicializarArcos();
 					this.iconoRedVial.setIcon( ICONO_OK );
-					//this.lblNombreRedVial.setText( redVialCargada.getName() );
+					this.lblNombreRedVial.setText( redVialCargada.getName() );
 					this.redVialCargada = true;
 					JOptionPane.showMessageDialog(new JPanel(), "Arcos cargados exitosamente.", "Exito!", JOptionPane.INFORMATION_MESSAGE );
 					
@@ -139,25 +139,24 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 					this.lblNombreRedVial.setText( NINGUNA_RED_VIAL_CARGADA );
 					this.redVialCargada = false;
 					JOptionPane.showMessageDialog(new JPanel() , error.getMessage(), "Error al cargar Red Vial.", JOptionPane.ERROR_MESSAGE );			
-					//error.printStackTrace();
+					error.printStackTrace();
 				}
-			//}
+			}
 		}
 		else if ( boton.equals( BUSCAR_PUNTOS_CONCATENADOS_GPS ) ){			
 			if ( this.redVialCargada == true ){
-				//this.selectorPuntosGPS = new JFileChooser();
-				//this.selectorPuntosGPS.setFileSelectionMode( JFileChooser.FILES_ONLY );
-				//int opcion = this.selectorPuntosGPS.showOpenDialog(this);
-				//if ( opcion == JFileChooser.APPROVE_OPTION ){
+				this.selectorPuntosGPS = new JFileChooser();
+				this.selectorPuntosGPS.setFileSelectionMode( JFileChooser.FILES_ONLY );
+				int opcion = this.selectorPuntosGPS.showOpenDialog(this);
+				if ( opcion == JFileChooser.APPROVE_OPTION ){
 					try{
-						//File archivoPuntosGPS = this.selectorPuntosGPS.getSelectedFile();
-						//this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, archivoPuntosGPS.getAbsolutePath(), null );
-						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, "C://Users//unalman//Desktop//concatenado_CARRO.csv", null );
+						File archivoPuntosGPS = this.selectorPuntosGPS.getSelectedFile();
+						this.archivoPuntosGPS = new ArchivoPuntosConcatenado( null, archivoPuntosGPS.getAbsolutePath(), null );
 						this.archivoPuntosGPS.cargarPuntosConcatenados();
 						this.archivoPuntosGPS.inicializarPuntos( this.archivoRedVial.getRedVial() );
 						this.archivoRedVial.getRedVial().calcularVelocidadesPromedio();
 						this.iconoArchivoGPS.setIcon( ICONO_OK );
-						//this.lblNombreArchivoGps.setText( archivoPuntosGPS.getName() );
+						this.lblNombreArchivoGps.setText( archivoPuntosGPS.getName() );
 						this.archivoGPSCargado = true;
 						JOptionPane.showMessageDialog(this, "Puntos GPS cargados exitosamente.", "Exito!", JOptionPane.INFORMATION_MESSAGE );
 						new FrameArbolArcosPuntos( this.archivoRedVial.getRedVial() ).setVisible( true );
@@ -169,7 +168,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 						JOptionPane.showMessageDialog(this, error.getMessage(), "Error al cargar Puntos GPS.", JOptionPane.ERROR_MESSAGE );			
 						error.printStackTrace();
 					}
-				//}
+				}
 			}
 			else{
 				JOptionPane.showMessageDialog(this, "Por favor cargue primero la red vial", "Error al cargar puntos GPS", JOptionPane.ERROR_MESSAGE );
