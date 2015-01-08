@@ -11,8 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
-
-import clasesVelocidad.RedVial;
 import utilidades.ArchivoPuntosConcatenado;
 import utilidades.ArchivoRedVial;
 
@@ -50,6 +48,7 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 	
 	private JFileChooser selectorRedVial;
 	private JFileChooser selectorPuntosGPS;
+	private JFileChooser selectorVelocidades;
 	
 
 	/**
@@ -176,21 +175,24 @@ public class PanelCalculoVelocidades extends JPanel implements ActionListener {
 		}
 		else if ( boton.equals( CALCULAR_VELOCIDADES ) ){
 			if ( this.redVialCargada == true  &&  this.archivoGPSCargado == true ){
-				
-				Thread hilo = new Thread(){
-					public void run(){
-						try {
-							//archivoRedVial.getRedVial().calcularVelocidadesPromedio();
-							archivoRedVial.getRedVial().guardarArcosPuntos(  new File("C://Users//unalman//Desktop//ArcosConVelocidades.csv")  );
-							JOptionPane.showMessageDialog( new JPanel(), "Archivo Arcos y Puntos generado exitosamente", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
+				this.selectorVelocidades = new JFileChooser();
+				this.selectorVelocidades.setFileSelectionMode( JFileChooser.FILES_ONLY );
+				int opcion = selectorVelocidades.showSaveDialog(this);
+				if ( opcion == JFileChooser.APPROVE_OPTION ){
+					File archivoVelocidades = this.selectorVelocidades.getSelectedFile();				
+					Thread hilo = new Thread(){
+						public void run(){
+							try {								
+								archivoRedVial.getRedVial().guardarArcosPuntos(  archivoVelocidades  );
+								JOptionPane.showMessageDialog( new JPanel(), "Archivo Arcos y Puntos generado exitosamente", "Éxito!", JOptionPane.INFORMATION_MESSAGE);
+							}
+							catch (FileNotFoundException e) {					
+								e.printStackTrace();
+							}	
 						}
-						catch (FileNotFoundException e) {					
-							e.printStackTrace();
-						}	
-					}
-				};
-				hilo.start();
-				
+					};
+					hilo.start();
+				}
 			}			
 			else{
 				JOptionPane.showMessageDialog(this, "Por favor cargue la red vial y el archivo con los puntos GPS.", "Error al calcular velocidades", JOptionPane.ERROR_MESSAGE );

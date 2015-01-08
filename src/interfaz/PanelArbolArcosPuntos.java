@@ -1,14 +1,8 @@
 package interfaz;
 
 import java.awt.BorderLayout;
-import java.util.Arrays;
-
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,7 +11,6 @@ import javax.swing.tree.TreeNode;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.JTextArea;
-import javax.swing.JLabel;
 
 import clasesVelocidad.Arco;
 import clasesVelocidad.Punto;

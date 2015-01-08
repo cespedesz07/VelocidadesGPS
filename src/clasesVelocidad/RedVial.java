@@ -5,10 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import utilidades.ArchivoPuntosConcatenado;
 import utilidades.ArchivoRedVial;
 
 
