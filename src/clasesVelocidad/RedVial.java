@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import utilidades.ArchivoPuntosConcatenado;
 import utilidades.ArchivoRedVial;
 
 
@@ -76,11 +78,9 @@ public class RedVial {
 	
 	
 	public void guardarArcosPuntos( File archivo ) throws FileNotFoundException{			
-		/*
 		String temp = Arrays.toString( ArchivoRedVial.COLUMNAS_RED_VIAL ).replace(",", ";") + "; VEL_PROM; " + 
 				      Arrays.toString( ArchivoPuntosConcatenado.COLUMNAS_PUNTOS ).replace(",", ";") + "\n";
-		*/
-		String temp = Arrays.toString( ArchivoRedVial.COLUMNAS_RED_VIAL ).replace(",", ";") + "; VEL_PROM\n";
+		
 		for ( Arco arco : arregloArcos ){
 			//for ( Punto punto : arco.getArregloPuntos() ){
 				//temp += arco.toString() + "; " + punto.toString() + "\n";
@@ -102,6 +102,24 @@ public class RedVial {
 	
 	
 	public String getInfoArco( int no ){
+		String infoArco = ""; 
+		for ( Arco arco : arregloArcos ){
+			if ( arco.getNo() == no ){
+				infoArco = "No: \t" + arco.getNo() + 
+						"\nDireccion: \t" + arco.getDireccion() + 
+						"\nX1: \t" + arco.getX1() +
+						"\nY1: \t" + arco.getY1() +
+						"\nX2: \t" + arco.getX2() +
+						"\nY2: \t" + arco.getY2() +
+						"\nVel. Promedio: \t" + arco.getVelocidadPromedio();
+				return infoArco;
+			}
+		}
+		return infoArco;
+	}
+	
+	
+	public String getInfoArcoConListaVelocidadesRuta( int no ){
 		String infoArco = ""; 
 		for ( Arco arco : arregloArcos ){
 			if ( arco.getNo() == no ){

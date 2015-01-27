@@ -23,8 +23,10 @@ public class PanelArbolArcosPuntos extends JPanel implements TreeSelectionListen
 	private static final String LABEL_PUNTO = "Punto";
 	
 	private JTree arbolArcosPuntos;
-	private JTextArea txtPropiedades;;
+	private JTextArea txtPropiedades;
 	private JScrollPane scroll;
+	
+	private JScrollPane scroll2;
 	
 	
 	private PanelCalculoVelocidades panelCalculoVelocidades;
@@ -46,7 +48,9 @@ public class PanelArbolArcosPuntos extends JPanel implements TreeSelectionListen
 		txtPropiedades.setEnabled( false );
 		txtPropiedades.setText( "Propiedades..." );
 		txtPropiedades.setBounds(263, 41, 227, 144);
-		add(txtPropiedades, BorderLayout.CENTER);
+		//add(txtPropiedades, BorderLayout.CENTER);
+		scroll2 = new JScrollPane( this.txtPropiedades );
+		add(scroll2, BorderLayout.CENTER);
 		
 		
 		this.redVial = redVial;
@@ -92,6 +96,7 @@ public class PanelArbolArcosPuntos extends JPanel implements TreeSelectionListen
 			if ( infoNodoPartida[0].equals( LABEL_ARCO ) ){
 				int idVia = Integer.valueOf( infoNodoPartida[1] );
 				this.txtPropiedades.setText( this.redVial.getInfoArco( idVia ) );
+				
 			}
 			else if ( infoNodoPartida[0].equals( LABEL_PUNTO ) ){
 				int idVia = Integer.valueOf( rutaNodo[ rutaNodo.length - 2 ].toString().split(" ")[1] );
